@@ -1,0 +1,25 @@
+POST http://localhost:8000/api/screen
+Content-Type: application/json
+
+{
+    "ScreenName":"Screen first",
+    "ScreenPoli":["681e2b899e565af610b7098e"]
+}
+
+###
+GET http://localhost:8000/api/screen
+
+###
+GET http://localhost:8000/api/screen/681e2ea4f716a41896fbfd0b
+
+###
+PUT http://localhost:8000/api/screen/681e2ea4f716a41896fbfd0b
+Content-Type: application/json
+
+{
+    "ScreenName":"Screen First",
+    "ScreenPoli":["681e2b899e565af610b7098e","681e2b6e9e565af610b7097e"]
+}
+
+###
+DELETE http://localhost:8000/api/screen/681e2ea4f716a41896fbfd0b

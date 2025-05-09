@@ -1,0 +1,24 @@
+POST http://localhost:8000/api/poli
+Content-Type: application/json
+
+{
+    "PoliName":"Poli Sixth",
+    "PoliCode":"PF - 6",
+    "PoliColor":""
+}
+
+###
+GET http://localhost:8000/api/poli
+
+###
+PUT http://localhost:8000/api/poli/681e2b6e9e565af610b7097e
+Content-Type: application/json
+
+{
+    "PoliName":"Poli First",
+    "PoliCode":"P - 1",
+    "PoliColor":"0 0 0"
+}
+
+###
+DELETE http://localhost:8000/api/poli/681e2be3d321b4ceb17f8d89
