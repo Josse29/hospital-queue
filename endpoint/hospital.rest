@@ -1,0 +1,16 @@
+###
+GET http://localhost:8000/api/hospital
+
+###
+PUT http://localhost:8000/api/hospital/681f3742355154bbf620becf
+Content-Type: application/json
+
+{
+    "HospitalName":"HospitalName",
+    "HospitalAddress":"HospitalAddress",
+    "HospitalPhone":"HospitalPhone",
+    "HospitalEmail":"HospitalEmail",
+    "HospitalLogo":"HospitalLogo",
+    "HospitalInfo":"HospitalInfo",
+    "HospitalMarquee":"HospitalMarquee"
+}

@@ -10,7 +10,7 @@ Content-Type: application/json
 GET http://localhost:8000/api/screen
 
 ###
-GET http://localhost:8000/api/screen/681e2ea4f716a41896fbfd0b
+GET http://localhost:8000/api/screen/681e2d75dd524c5f9171c381
 
 ###
 PUT http://localhost:8000/api/screen/681e2ea4f716a41896fbfd0b

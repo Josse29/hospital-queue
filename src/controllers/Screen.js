@@ -2,9 +2,8 @@ import Screen from "../models/Screen.js";
 import { capitalizeWord } from "../utils/index.js";
 
 const createScreen = async (req, res) => {
+  const { ScreenName, ScreenPoli } = req.body;
   try {
-    // receive all request from client
-    const { ScreenName, ScreenPoli } = req.body;
     const ScreenNameVal = capitalizeWord(ScreenName);
     if (!ScreenNameVal || !ScreenPoli) {
       return res
@@ -31,10 +30,9 @@ const createScreen = async (req, res) => {
   }
 };
 const readScreen = async (req, res) => {
+  const { search } = req.query;
   try {
-    const keyword = req.query.search
-      ? { name: { $regex: req.query.search, $options: "i" } }
-      : {};
+    const keyword = search ? { name: { $regex: search, $options: "i" } } : {};
     const screen = await Screen.find(keyword).populate("ScreenPoli");
     return res.status(200).json(screen);
   } catch (error) {
@@ -42,8 +40,8 @@ const readScreen = async (req, res) => {
   }
 };
 const readScreenId = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
     const screen = await Screen.findById(id).populate("ScreenPoli");
     if (!screen) {
       return res.status(404).json({ errMsg: `Screen - Not Found !` });
@@ -54,8 +52,8 @@ const readScreenId = async (req, res) => {
   }
 };
 const updateScreen = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
     const { ScreenName, ScreenPoli } = req.body;
     const ScreenNameVal = capitalizeWord(ScreenName);
     if (!ScreenNameVal || !ScreenPoli) {
@@ -90,8 +88,8 @@ const updateScreen = async (req, res) => {
   }
 };
 const deleteScreen = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
     const screen = await Screen.findByIdAndDelete(id);
     if (!screen) {
       return res.status(404).json({ errMsg: `Screen is not found !` });

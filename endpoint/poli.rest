@@ -22,3 +22,15 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:8000/api/poli/681e2be3d321b4ceb17f8d89
+
+###
+PUT http://localhost:8000/api/poli/print-queue/681e2b6e9e565af610b7097e
+
+###
+PUT http://localhost:8000/api/poli/ring-queue/681e2b6e9e565af610b7097e
+Content-Type: application/json
+
+{
+    "No":1,
+    "Date":"2025-05-11"
+}
