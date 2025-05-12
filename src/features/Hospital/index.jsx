@@ -1,2 +1,4 @@
 import FormLogin from "./FormLogin";
-export { FormLogin };
+import ModalLogout from "./ModalLogout";
+
+export { FormLogin, ModalLogout };

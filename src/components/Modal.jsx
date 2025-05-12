@@ -3,26 +3,18 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const Modal = (props) => {
   const { openModal, width, children } = props;
-  useEffect(() => {
-    if (openModal) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [openModal]);
   return (
     <AnimatePresence>
       {openModal && (
-        <div className="fixed z-20 top-0 bottom-0 right-0 left-0 bg-zinc-600 bg-opacity-60 flex justify-center items-center">
+        <div className="fixed inset-0 flex justify-center items-center h-screen">
+          {/* Overlay background */}
+          <div className="fixed inset-0 bg-zinc-400 opacity-35" />
           <motion.div
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -100, opacity: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className={`${width}`}
+            className={`${width} opacity-100 z-30`}
           >
             {children}
           </motion.div>

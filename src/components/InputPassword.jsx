@@ -2,7 +2,7 @@ import React from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
 const Label = (props) => {
-  const { title, passwordVisible, setpasswordVisible, ...rest } = props;
+  const { title, passwordVisible, setPasswordVisible, ...rest } = props;
   return (
     <div className="flex justify-between items-center">
       <label className="text-2xl" {...rest}>
@@ -10,7 +10,7 @@ const Label = (props) => {
       </label>
       <div
         className="hover:cursor-pointer"
-        onClick={() => setpasswordVisible(!passwordVisible)}
+        onClick={() => setPasswordVisible(!passwordVisible)}
       >
         {passwordVisible ? (
           <FaEye className="text-2xl me-4" />
@@ -26,7 +26,7 @@ const Input = (props) => {
   return (
     <input
       type={passwordVisible ? "text" : "password"}
-      className={`border border-slate-300 p-2 w-full rounded-md ${className}`}
+      className={`border border-slate-300 px-3 py-2 w-full rounded-md ${className}`}
       placeholder="******"
       {...rest}
     />

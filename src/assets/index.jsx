@@ -1,2 +1,3 @@
 import LoginImg from "./img/login.png";
-export { LoginImg };
+import Logo from "./img/logo.png";
+export { LoginImg, Logo };

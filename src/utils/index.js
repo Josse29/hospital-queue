@@ -4,10 +4,13 @@ import {
   formatCurrency2,
   unFormatCurrency,
 } from "./currency";
+import { formatDateTime } from "./dateTime";
 
 import { getImageBase64, validateExt } from "./Image";
 import { formatPercentage, formatPercentage1 } from "./percent";
+
 export {
+  formatDateTime,
   formatCurrency,
   formatCurrency1,
   formatCurrency2,

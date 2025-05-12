@@ -10,7 +10,7 @@ const InputText = (props) => {
       <input
         id={htmlForId}
         type="text"
-        className={`p-2 w-full border border-slate-300 rounded-md placeholder:text-slate-400 focus:outline-2 ${className}`}
+        className={`px-3 py-2 w-full border border-slate-300 rounded-md placeholder:text-slate-400 focus:outline-2 ${className}`}
         {...rest}
       />
     </>
