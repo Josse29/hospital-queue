@@ -1,3 +1,4 @@
-09/05/2025 - 11/05/2025
+09/05/2025 - 13/05/2025
 - setup project fe-be
 - finishing backend 
+- finish remaining frontend

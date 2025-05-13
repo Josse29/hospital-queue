@@ -11,9 +11,9 @@ const Card = (props) => {
   );
 };
 const Header = (props) => {
-  const { className, headerTitle } = props;
+  const { className, headerTitle, ...rest } = props;
   return (
-    <div className={`${className} p-3`}>
+    <div className={`${className} p-3`} {...rest}>
       <div className="text-3xl text-white">{headerTitle}</div>
     </div>
   );

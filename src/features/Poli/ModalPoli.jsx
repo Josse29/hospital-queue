@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, InputSearch, Modal } from "../../components";
+import { Button, Modal } from "../../components";
 import { deletePoliAPI, getPoliAPI, updatePoliAPI } from "../../services/poli";
 import ListPoli from "./ListPoli";
 import DeletePoli from "./DeletePoli";
@@ -8,6 +8,7 @@ import { FaCheck } from "react-icons/fa6";
 import { FaTimes } from "react-icons/fa";
 import Swal from "sweetalert2";
 import UpdatePoli from "./UpdatePoli";
+import SearchPoli from "./SearchPoli";
 
 const ModalPoli = (props) => {
   const { openPoli, setOpenPoli } = props;
@@ -45,6 +46,7 @@ const ModalPoli = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { PoliId, PoliName, PoliCode, PoliColor, Red, Green, Blue } = data;
+    setLoading(true);
     try {
       if (method === "delete") {
         const msg = await deletePoliAPI(PoliId);
@@ -65,10 +67,14 @@ const ModalPoli = (props) => {
         title: error.response.data.errMsg,
         icon: "error",
       });
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
-    getPoli();
+    if (openPoli) {
+      getPoli();
+    }
   }, [openPoli]);
   return (
     <Modal openModal={openPoli} width="w-[550px]">
@@ -88,13 +94,7 @@ const ModalPoli = (props) => {
                     <>
                       {/* search */}
                       <div className="mb-3">
-                        <InputSearch>
-                          <InputSearch.Input
-                            placeholder="Input Keyword Poli...."
-                            className="focus:outline-sky-600 w-full"
-                          />
-                          <InputSearch.Btn className="bg-sky-500 hover:bg-sky-600" />
-                        </InputSearch>
+                        <SearchPoli className="w-full" />
                       </div>
                       {/* list */}
                       <ListPoli
@@ -142,6 +142,7 @@ const ModalPoli = (props) => {
               <Button
                 title="Done"
                 type="submit"
+                disabled={loading ? true : false}
                 className="bg-sky-500 hover:bg-sky-600 hover:ring-sky-600"
               />
             </>
@@ -159,6 +160,7 @@ const ModalPoli = (props) => {
                 title="Yes"
                 icon={<FaCheck />}
                 type="submit"
+                disabled={loading ? true : false}
                 className="bg-red-500 hover:bg-red-600 hover:ring-red-600"
               />
             </>

@@ -3,7 +3,7 @@ import { InputRange, InputText } from "../../components";
 
 const UpdatePoli = (props) => {
   const { data, setData } = props;
-  const { PoliId, PoliName, PoliCode, PoliColor, Red, Green, Blue } = data;
+  const { PoliId, PoliName, PoliCode, Red, Green, Blue } = data;
   useEffect(() => {
     setData({
       PoliId,
