@@ -5,6 +5,7 @@ import {
   formatDateTime,
   validateWhite,
 } from "../utils/index.js";
+
 const createPoli = async (req, res) => {
   const { PoliName, PoliCode, PoliColor } = req.body;
   try {
@@ -61,23 +62,38 @@ const readPoli = async (req, res) => {
     const keyword = search
       ? { PoliName: { $regex: search, $options: "i" } }
       : {};
-    const poli = await Poli.find(keyword).sort({ PoliName: 1 });
+    const poli = await Poli.find(keyword, "-PoliQueue").sort({ PoliName: 1 });
     return res.status(200).json(poli);
   } catch (error) {
     return res.status(500).json({ errMsg: error.message });
   }
 };
-const readPoli1 = async (req, res) => {
+const readPoliQueue = async (req, res) => {
   const { search } = req.query;
   try {
     const keyword = search
       ? { PoliName: { $regex: search, $options: "i" } }
       : {};
-    const poli = await Poli.find(keyword);
     const { FormatDate } = formatDateTime();
-    poli.filter((el) => {
-      return el.PoliQueue === FormatDate;
-    });
+    console.log(FormatDate);
+    const poli = await Poli.aggregate([
+      { $match: keyword },
+      {
+        $project: {
+          PoliName: 1,
+          PoliCode: 1,
+          PoliColor: 1,
+          PoliQueue: {
+            $filter: {
+              input: "$PoliQueue",
+              as: "queue",
+              cond: { $eq: ["$$queue.Date", FormatDate] },
+            },
+          },
+        },
+      },
+      { $sort: { PoliName: 1 } },
+    ]);
     return res.status(200).json(poli);
   } catch (error) {
     return res.status(500).json({ errMsg: error.message });
@@ -224,7 +240,7 @@ const ringPoliQueue = async (req, res) => {
     });
     if (!poli) {
       return res.status(404).json({
-        errMsg: `Poli Queue not found or already called 3 times`,
+        errMsg: `Poli Queue Is Not Found or It's already called 3 times`,
       });
     }
     await Poli.findOneAndUpdate(
@@ -255,4 +271,5 @@ export {
   deletePoli,
   printPoliQueue,
   ringPoliQueue,
+  readPoliQueue,
 };

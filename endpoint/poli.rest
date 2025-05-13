@@ -11,6 +11,9 @@ Content-Type: application/json
 GET http://localhost:8000/api/poli?search=
 
 ###
+GET http://localhost:8000/api/poli/queue
+
+###
 PUT http://localhost:8000/api/poli/6822d5ffb82d26757adc5964
 Content-Type: application/json
 
@@ -21,7 +24,7 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:8000/api/poli/6822cc23da8ec6ec7d27b840
+DELETE http://localhost:8000/api/poli/68236129075474b86c44e8d7
 
 ###
 PUT http://localhost:8000/api/poli/print-queue/6822e7dc191c0427ab4b39a8

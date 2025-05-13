@@ -8,6 +8,9 @@ const ScreenSchema = mongoose.Schema(
         ref: "Poli",
       },
     ],
+    ScreenInfo: {
+      type: String,
+    },
   },
   {
     timestamps: true,

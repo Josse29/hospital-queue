@@ -2,7 +2,7 @@ import Screen from "../models/Screen.js";
 import { capitalizeWord } from "../utils/index.js";
 
 const createScreen = async (req, res) => {
-  const { ScreenName, ScreenPoli } = req.body;
+  const { ScreenName, ScreenPoli, ScreenInfo } = req.body;
   try {
     const ScreenNameVal = capitalizeWord(ScreenName);
     if (!ScreenNameVal || !ScreenPoli) {
@@ -22,6 +22,7 @@ const createScreen = async (req, res) => {
     const newScreen = new Screen({
       ScreenName: ScreenNameVal,
       ScreenPoli,
+      ScreenInfo,
     });
     await newScreen.save();
     return res.status(200).json({ msg: `${ScreenNameVal} - Has Been Added` });
@@ -33,8 +34,13 @@ const readScreen = async (req, res) => {
   const { search } = req.query;
   try {
     const keyword = search ? { name: { $regex: search, $options: "i" } } : {};
-    const screen = await Screen.find(keyword).populate("ScreenPoli");
-    return res.status(200).json(screen);
+    const screens = await Screen.find(keyword)
+      .populate({
+        path: "ScreenPoli",
+        options: { sort: { PoliName: 1 } },
+      })
+      .sort({ ScreenName: 1 });
+    return res.status(200).json(screens);
   } catch (error) {
     return res.status(500).json({ errMsg: error.message });
   }

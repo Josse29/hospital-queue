@@ -4,6 +4,7 @@ import {
   deletePoli,
   printPoliQueue,
   readPoli,
+  readPoliQueue,
   ringPoliQueue,
   updatePoli,
 } from "../controllers/Poli.js";
@@ -11,6 +12,7 @@ import protect from "../utils/verifyAdmin.js";
 const router = express.Router();
 router.post("/", createPoli);
 router.get("/", readPoli);
+router.get("/queue", readPoliQueue);
 router.put("/:id", updatePoli);
 router.delete("/:id", deletePoli);
 router.put("/print-queue/:id", printPoliQueue);
