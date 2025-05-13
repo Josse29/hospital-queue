@@ -2,35 +2,35 @@ POST http://localhost:8000/api/poli
 Content-Type: application/json
 
 {
-    "PoliName":"Poli Sixth",
-    "PoliCode":"PF - 6",
-    "PoliColor":""
+    "PoliName":"Poli A",
+    "PoliCode":"P - A",
+    "PoliColor":"255,0,255"
 }
 
 ###
-GET http://localhost:8000/api/poli
+GET http://localhost:8000/api/poli?search=
 
 ###
-PUT http://localhost:8000/api/poli/681e2b6e9e565af610b7097e
+PUT http://localhost:8000/api/poli/6822d5ffb82d26757adc5964
 Content-Type: application/json
 
 {
-    "PoliName":"Poli First",
-    "PoliCode":"P - 1",
-    "PoliColor":"0 0 0"
+    "PoliName":"Poli Second",
+    "PoliCode":"P - 2",
+    "PoliColor":"0,0,0"
 }
 
 ###
-DELETE http://localhost:8000/api/poli/681e2be3d321b4ceb17f8d89
+DELETE http://localhost:8000/api/poli/6822cc23da8ec6ec7d27b840
 
 ###
-PUT http://localhost:8000/api/poli/print-queue/681e2b6e9e565af610b7097e
+PUT http://localhost:8000/api/poli/print-queue/6822e7dc191c0427ab4b39a8
 
 ###
-PUT http://localhost:8000/api/poli/ring-queue/681e2b6e9e565af610b7097e
+PUT http://localhost:8000/api/poli/ring-queue/6822d58f90248647c402716d
 Content-Type: application/json
 
 {
     "No":1,
-    "Date":"2025-05-11"
+    "Date":"2025-05-13"
 }

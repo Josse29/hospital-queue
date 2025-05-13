@@ -42,11 +42,11 @@ const validateLoadImg1 = async (base64) => {
 const validatePassword = () => {
   if (UserPasswordVal === "" && UserPassword1Val === "") {
     const msg = `Password and Confirmation Password are required `;
-    throw new Error(msg);
+    return msg;
   }
   if (UserPasswordVal !== UserPassword1Val) {
     const msg = `Password must be same with Confirm Password`;
-    throw new Error(msg);
+    return msg;
   }
   const password = /^(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!])(?=.{8,})/;
   const isValid = password.test(UserPasswordVal);
@@ -57,7 +57,7 @@ const validatePassword = () => {
     At least 1 Capital letter (A-Z),
     At least 1 Number (0-9),
     At least 1 Character sepecial (@,#,$) `;
-    throw new Error(msg);
+    return msg;
   }
 };
 const validateUserName = (UserNameVal) => {
@@ -70,10 +70,20 @@ const validateUserName = (UserNameVal) => {
   if (!isValid) {
     const msg = `
     Requirement Username
-    Only contain Alphabet, Number,
+    Only contain Alphabet, Number, Without Space
     Minimum length Character 3 - 15 
   `;
     throw new Error(msg);
   }
 };
-export { capitalizeWord, validateEmail, formatDateTime, validateLoadImg1 };
+const validateWhite = (val) => {
+  const isWhite = val === "255,255,255";
+  return isWhite;
+};
+export {
+  capitalizeWord,
+  validateEmail,
+  formatDateTime,
+  validateLoadImg1,
+  validateWhite,
+};

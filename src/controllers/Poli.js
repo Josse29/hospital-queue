@@ -1,5 +1,10 @@
+import { Types } from "mongoose";
 import Poli from "../models/Poli.js";
-import { capitalizeWord, formatDateTime } from "../utils/index.js";
+import {
+  capitalizeWord,
+  formatDateTime,
+  validateWhite,
+} from "../utils/index.js";
 const createPoli = async (req, res) => {
   const { PoliName, PoliCode, PoliColor } = req.body;
   try {
@@ -27,6 +32,13 @@ const createPoli = async (req, res) => {
         errMsg: `Uppssss, Poli Code : ${PoliCodeVal} is already Existed !`,
       });
     }
+    // validate color
+    const isWhite = validateWhite(PoliColor);
+    if (isWhite) {
+      return res
+        .status(409)
+        .json({ errMsg: "Uppppss, Poli Color White isn't allowed !" });
+    }
     // create new user
     const newPoli = new Poli({
       PoliName: PoliNameVal,
@@ -46,8 +58,26 @@ const createPoli = async (req, res) => {
 const readPoli = async (req, res) => {
   const { search } = req.query;
   try {
-    const keyword = search ? { name: { $regex: search, $options: "i" } } : {};
+    const keyword = search
+      ? { PoliName: { $regex: search, $options: "i" } }
+      : {};
+    const poli = await Poli.find(keyword).sort({ PoliName: 1 });
+    return res.status(200).json(poli);
+  } catch (error) {
+    return res.status(500).json({ errMsg: error.message });
+  }
+};
+const readPoli1 = async (req, res) => {
+  const { search } = req.query;
+  try {
+    const keyword = search
+      ? { PoliName: { $regex: search, $options: "i" } }
+      : {};
     const poli = await Poli.find(keyword);
+    const { FormatDate } = formatDateTime();
+    poli.filter((el) => {
+      return el.PoliQueue === FormatDate;
+    });
     return res.status(200).json(poli);
   } catch (error) {
     return res.status(500).json({ errMsg: error.message });
@@ -68,8 +98,9 @@ const updatePoli = async (req, res) => {
     // valid exsited name
     const namePoliExsited = await Poli.findOne({
       PoliName: PoliNameVal,
+      _id: { $ne: id },
     });
-    if (namePoliExsited && namePoliExsited._id.toString() !== id) {
+    if (namePoliExsited) {
       return res.status(409).json({
         errMsg: `Upppps, Poli Name : ${PoliNameVal} is already Existed !`,
       });
@@ -77,11 +108,19 @@ const updatePoli = async (req, res) => {
     // valid codePoli is already
     const codePoliExsited = await Poli.findOne({
       PoliCode: PoliCodeVal,
+      _id: { $ne: id },
     });
-    if (codePoliExsited && codePoliExsited._id.toString() !== id) {
+    if (codePoliExsited) {
       return res.status(409).json({
         errMsg: `Upppps, Poli Code : ${PoliCodeVal} is Already Existed !`,
       });
+    }
+    // validate Color
+    const isWhite = validateWhite(PoliColor);
+    if (isWhite) {
+      return res
+        .status(409)
+        .json({ errMsg: "Uppppss, Poli Color White isn't allowed !" });
     }
     // Update poli by id
     const updated = await Poli.findByIdAndUpdate(
@@ -112,22 +151,38 @@ const deletePoli = async (req, res) => {
     }
     return res
       .status(200)
-      .json({ message: `${result.PoliName} - has been Deleted ` });
+      .json({ msg: `${result.PoliName} - has been Deleted ` });
   } catch (error) {
     return res.status(500).json({ errMsg: error.message });
   }
 };
 const printPoliQueue = async (req, res) => {
   const { id } = req.params;
+  const { FormatDate, Time } = formatDateTime();
   try {
-    const poli = await Poli.findById(id);
-    if (!poli) return res.status(404).json({ errMsg: "Poli is not found" });
-    const { FormatDate, Time } = formatDateTime();
-    const sameDateQueues = poli.PoliQueue.filter(
-      (el) => el.Date === FormatDate
-    );
-    const nextNo = sameDateQueues.length + 1 || 1;
-    const data = {
+    const poliAgg = await Poli.aggregate([
+      { $match: { _id: new Types.ObjectId(id) } },
+      {
+        $project: {
+          PoliName: 1,
+          PoliCode: 1,
+          PoliQueueToday: {
+            $filter: {
+              input: "$PoliQueue",
+              as: "queue",
+              cond: { $eq: ["$$queue.Date", FormatDate] },
+            },
+          },
+        },
+      },
+    ]);
+    if (!poliAgg.length) {
+      return res.status(404).json({ errMsg: "Poli not found" });
+    }
+    const poli = poliAgg[0];
+    const nextNo = poli.PoliQueueToday.length + 1;
+
+    const newQueueData = {
       No: nextNo,
       Date: FormatDate,
       Time,
@@ -135,16 +190,20 @@ const printPoliQueue = async (req, res) => {
       PoliCode: poli.PoliCode,
       CallTimes: 0,
     };
-    poli.PoliQueue.push(data);
-    poli.PoliQueue.sort((a, b) => {
-      const dateA = new Date(a.Date);
-      const dateB = new Date(b.Date);
-      if (dateA > dateB) return -1;
-      if (dateA < dateB) return 1;
-      return a.Time.localeCompare(b.Time);
-    });
-    await poli.save();
-    return res.status(200).json(data);
+
+    await Poli.updateOne(
+      { _id: id },
+      {
+        $push: {
+          PoliQueue: {
+            $each: [newQueueData],
+            $sort: { Date: -1, Time: 1 },
+          },
+        },
+      }
+    );
+
+    return res.status(200).json(newQueueData);
   } catch (error) {
     return res.status(500).json({ errMsg: error.message });
   }
@@ -153,28 +212,38 @@ const ringPoliQueue = async (req, res) => {
   const { id } = req.params;
   const { No, Date } = req.body;
   try {
-    const poli = await Poli.findById(id);
-    if (!poli) return res.status(404).json({ errMsg: "Poli is not found" });
-    const poliQueue = poli.PoliQueue;
-    const poliQueueI = poliQueue.findIndex((el) => {
-      return el.No === No && el.Date === Date;
+    const poli = await Poli.findOne({
+      _id: id,
+      PoliQueue: {
+        $elemMatch: {
+          No,
+          Date,
+          CallTimes: { $lt: 3 },
+        },
+      },
     });
-    if (poliQueueI === -1) {
-      return res.status(404).json({ errMsg: "Poli Queue is not found" });
-    }
-    if (poliQueue[poliQueueI].CallTimes === 3) {
+    if (!poli) {
       return res.status(404).json({
-        errMsg: `Ring Bell ${poli.PoliName} No - ${No} is already 3 times`,
+        errMsg: `Poli Queue not found or already called 3 times`,
       });
     }
-    poliQueue[poliQueueI].CallTimes += 1;
-    poli.markModified("PoliQueue");
-    await poli.save();
-    return res
-      .status(200)
-      .json({
-        msg: `Poli Queue No - ${poliQueue[poliQueueI].CallTimes} is called`,
-      });
+    await Poli.findOneAndUpdate(
+      {
+        _id: id,
+        "PoliQueue.No": No,
+        "PoliQueue.Date": Date,
+        "PoliQueue.CallTimes": { $lt: 3 },
+      },
+      {
+        $inc: {
+          "PoliQueue.$.CallTimes": 1,
+        },
+      },
+      { new: true }
+    );
+    return res.status(200).json({
+      msg: `Nomor Antrian ${No} ke ${poli.PoliName}`,
+    });
   } catch (error) {
     return res.status(500).json({ errMsg: error.message });
   }
