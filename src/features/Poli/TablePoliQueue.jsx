@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Table } from "../../components";
 import { FaBell } from "react-icons/fa6";
 
-const TableQueue = (props) => {
+const TablePoliQueue = (props) => {
   const { poliQueue } = props;
   return (
     <Table>
@@ -18,13 +18,14 @@ const TableQueue = (props) => {
         {poliQueue.length >= 1 &&
           poliQueue.map((el, i) => (
             <Table.BodyRow
+              key={i}
               className={`${(i + 1) % 2 !== 0 ? "bg-slate-200" : ""}`}
             >
               <Table.BodyCol title={el.No} className="text-center" />
               <Table.BodyCol title={el.Date} />
               <Table.BodyCol title={el.Time} className="text-center" />
               <Table.BodyCol title={el.PoliName} />
-              <Table.BodyCol title={el.PoliCode} />
+              <Table.BodyCol title={el.PoliCode} className="text-center" />
               <Table.BodyCol
                 title={
                   <Button
@@ -36,9 +37,18 @@ const TableQueue = (props) => {
               />
             </Table.BodyRow>
           ))}
+        {poliQueue.length < 1 && (
+          <Table.BodyRow className="bg-slate-200">
+            <Table.BodyCol
+              title="Queue is Empty..."
+              className="text-center italic"
+              colSpan="6"
+            />
+          </Table.BodyRow>
+        )}
       </Table.Body>
     </Table>
   );
 };
 
-export default TableQueue;
+export default TablePoliQueue;

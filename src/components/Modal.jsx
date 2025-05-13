@@ -3,6 +3,16 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const Modal = (props) => {
   const { openModal, width, children } = props;
+  useEffect(() => {
+    if (openModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [openModal]);
   return (
     <AnimatePresence>
       {openModal && (

@@ -11,13 +11,13 @@ const HeadPage = (props) => {
   }, []);
   return (
     <div
-      className={`flex justify-between border-l-[18px] py-3 px-4 shadow-md mb-4 ${className}`}
+      className={`flex justify-between border-l-[18px] py-4 px-3 shadow-md mb-6 ${className} bg-white`}
     >
       <div className="flex gap-3 items-center">
         {icon}
-        <div className="text-2xl">{page}</div>
+        <div className="text-3xl">{page}</div>
       </div>
-      <div className="text-xl">{date}</div>
+      <div className="text-2xl">{date}</div>
     </div>
   );
 };

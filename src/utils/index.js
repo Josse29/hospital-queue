@@ -8,6 +8,7 @@ import { formatDateTime } from "./dateTime";
 
 import { getImageBase64, validateExt } from "./Image";
 import { formatPercentage, formatPercentage1 } from "./percent";
+import { getPoli } from "./poli";
 
 export {
   formatDateTime,
@@ -19,4 +20,5 @@ export {
   unFormatCurrency,
   validateExt,
   getImageBase64,
+  getPoli,
 };

@@ -1,10 +1,65 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "../navigation";
+import { ButtonIcon, Container, HeadPage } from "../components";
+import { FaTv } from "react-icons/fa6";
+import { FaPlusSquare } from "react-icons/fa";
+import {
+  BtnRefreshScreen,
+  ModalCreateScreen,
+  SearchScreen,
+  TableScreen,
+} from "../features/Screen";
+import { getScreenAPI } from "../services/screen";
 
 const ScreenSetting = () => {
+  const [createScreen, setCreateScreen] = useState(false);
+  const [screen, setScreen] = useState([]);
+  const getScreen = async () => {
+    try {
+      const response = await getScreenAPI();
+      setScreen(response.data);
+    } catch (error) {
+      throw error;
+    }
+  };
+  useEffect(() => {
+    getScreen();
+  }, []);
   return (
     <NavigationContainer>
-      <div>This is Screen Setting</div>
+      <HeadPage
+        className="border-teal-400"
+        icon={<FaTv className="text-3xl" />}
+        page="Screen Setting"
+      />
+      <Container>
+        {/* section first create, search. total */}
+        <div className="flex justify-between items-center gap-3 mb-5">
+          <div className="flex gap-4">
+            {/* refresh */}
+            <BtnRefreshScreen setScreen={setScreen} />
+            {/* create screen */}
+            <ButtonIcon
+              title="Screen"
+              icon={<FaPlusSquare />}
+              className="bg-teal-600 hover:bg-teal-700 hover:ring-teal-700"
+              onClick={() => setCreateScreen(true)}
+            />
+            {/* search  screen */}
+            <SearchScreen setScreen={setScreen} />
+          </div>
+          <div className="text-xl">Total Screen : {screen.length}</div>
+        </div>
+        {/* section second table */}
+        <div className="mb-3">
+          <TableScreen screen={screen} />
+        </div>
+        {/* section modal */}
+        <ModalCreateScreen
+          createScreen={createScreen}
+          setCreateScreen={setCreateScreen}
+        />
+      </Container>
     </NavigationContainer>
   );
 };

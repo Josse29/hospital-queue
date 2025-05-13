@@ -38,9 +38,9 @@ const ModalCreatePoli = (props) => {
       setFormData({
         PoliName: "",
         PoliCode: "",
-        Red: 0,
+        Red: 125,
         Green: 0,
-        Blue: 0,
+        Blue: 255,
       });
       setCreatePoli(false);
       Swal.fire({
@@ -93,6 +93,7 @@ const ModalCreatePoli = (props) => {
           <div className="mb-4">
             <div className="text-2xl mb-3">Poli Color :</div>
             <div className="flex gap-4">
+              {/* preview */}
               <div
                 className={`w-[40%] text-3xl flex justify-center items-center uppercase rounded-md text-white font-bold`}
                 style={{
@@ -109,7 +110,7 @@ const ModalCreatePoli = (props) => {
                   htmlForId="red"
                   className="w-full accent-red-500"
                   min={0}
-                  max={255}
+                  max={200}
                   onChange={handleChange}
                   name="Red"
                   value={formData.Red}
@@ -120,7 +121,7 @@ const ModalCreatePoli = (props) => {
                   htmlForId="green"
                   className="w-full accent-green-500"
                   min={0}
-                  max={255}
+                  max={200}
                   onChange={handleChange}
                   name="Green"
                   value={formData.Green}
@@ -131,7 +132,7 @@ const ModalCreatePoli = (props) => {
                   htmlForId="blue"
                   className="w-full accent-blue-500"
                   min={0}
-                  max={255}
+                  max={200}
                   onChange={handleChange}
                   name="Blue"
                   value={formData.Blue}

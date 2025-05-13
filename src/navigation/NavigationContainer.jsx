@@ -9,7 +9,7 @@ import { Link, useLocation } from "react-router";
 const Top = () => {
   const { setLogout } = useContext(AllContext);
   return (
-    <div className="fixed top-0 w-full h-[80px] flex bg-cyan-600">
+    <div className="fixed top-0 w-full h-[80px] flex bg-cyan-700">
       {/* first section */}
       <div className="w-[210px] flex">
         <FaBars className="m-auto text-white text-2xl" />
@@ -45,7 +45,7 @@ const SideItem = (props) => {
     <Link to={to}>
       <div
         className={`flex items-center gap-2 text-white px-3 py-2 mb-3 ${
-          isActive ? "bg-slate-400 rounded-md" : ""
+          isActive ? "bg-cyan-600 rounded-md" : ""
         }`}
       >
         {icon}
@@ -56,7 +56,7 @@ const SideItem = (props) => {
 };
 const Side = () => {
   return (
-    <div className="w-[210px] fixed top-[80px] bottom-0 bg-slate-600">
+    <div className="w-[210px] fixed top-[80px] bottom-0 bg-cyan-900">
       <div className=" h-screen flex flex-col justify-start p-3">
         <SideItem to="/queue-ring" icon={<FaBell />} page="Queue Ring" />
         <SideItem to="/setting-screen" icon={<FaTv />} page="Setting Screen" />
@@ -71,7 +71,9 @@ const NavigationContainer = ({ children }) => {
     <>
       <Top />
       <Side />
-      <div className="ms-[210px] mt-[80px] py-6 px-8">{children}</div>
+      <div className="ps-[210px] pt-[80px] bg-slate-100 min-h-screen">
+        <div className="p-9">{children}</div>
+      </div>
       <ModalLogout />
     </>
   );

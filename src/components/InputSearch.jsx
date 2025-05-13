@@ -15,9 +15,9 @@ const Input = (props) => {
   );
 };
 const Button = (props) => {
-  const { className } = props;
+  const { className, ...rest } = props;
   return (
-    <button className={`px-3 text-white rounded-e-lg ${className}`}>
+    <button className={`px-3 text-white rounded-e-lg ${className}`} {...rest}>
       <FaMagnifyingGlass className=" text-white text-xl" />
     </button>
   );

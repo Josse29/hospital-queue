@@ -1,8 +1,16 @@
 import api from "./api";
 
-const getPoliAPI = async (req) => {
+const getPoliAPI = async (req = "") => {
   try {
-    const response = await api.get("/poli", req);
+    const response = await api.get(`/poli?search=${req}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+const getPoliQueueAPI = async (req) => {
+  try {
+    const response = await api.get(`/poli/queue?search=${req}`);
     return response;
   } catch (error) {
     throw error;
@@ -42,4 +50,10 @@ const updatePoliAPI = async (req) => {
     throw error;
   }
 };
-export { getPoliAPI, createPoliAPI, deletePoliAPI, updatePoliAPI };
+export {
+  getPoliAPI,
+  getPoliQueueAPI,
+  createPoliAPI,
+  deletePoliAPI,
+  updatePoliAPI,
+};

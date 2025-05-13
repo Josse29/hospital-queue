@@ -1,21 +1,36 @@
 import { useEffect, useState } from "react";
 import { NavigationContainer } from "./../navigation";
-import { FaAngleDown, FaBell, FaFolderPlus } from "react-icons/fa6";
-import { ButtonIcon, HeadPage } from "../components";
-import { CardPoli, ModalPoli, SearchPoli } from "../features/Poli";
+import {
+  FaAngleDown,
+  FaBell,
+  FaFolderPlus,
+  FaRotateRight,
+} from "react-icons/fa6";
+import {
+  Button,
+  ButtonIcon,
+  Container,
+  HeadPage,
+  InputSearch,
+} from "../components";
+import {
+  BtnRefreshPoliQueue,
+  CardPoliQueue,
+  ModalPoli,
+  SearchPoliQueue,
+} from "../features/Poli";
 import ModalCreatePoli from "../features/Poli/ModalCreatePoli";
-import { getPoliAPI } from "../services/poli";
+import { getPoliQueueAPI } from "../services/poli";
 
 const QueueRing = () => {
   const [openPoli, setOpenPoli] = useState(false);
   const [createPoli, setCreatePoli] = useState(false);
-  const [poli, setPoli] = useState([]);
-  const getPoli = async () => {
+  const [poliQueue, setPoliQueue] = useState([]);
+  const getPoliQueue = async () => {
     // setLoading(true);
     try {
-      const response = await getPoliAPI();
-      console.log(response.data);
-      setPoli(response.data);
+      const response = await getPoliQueueAPI("");
+      setPoliQueue(response.data);
     } catch (error) {
       throw error;
     } finally {
@@ -23,7 +38,7 @@ const QueueRing = () => {
     }
   };
   useEffect(() => {
-    getPoli();
+    getPoliQueue();
   }, []);
   return (
     <NavigationContainer>
@@ -32,13 +47,15 @@ const QueueRing = () => {
         icon={<FaBell className="text-3xl" />}
         page="Queue Ring"
       />
-      <div className="shadow-md py-3 px-4">
+      <Container>
         {/* listpoli, createpoli, searchpoli */}
-        <div className="flex justify-end gap-4 mb-5">
+        <div className="flex justify-end gap-3 mb-5">
+          {/* refresh */}
+          <BtnRefreshPoliQueue setPoliQueue={setPoliQueue} />
           {/* modal poli */}
           <ButtonIcon
             title="List Poli"
-            icon={<FaAngleDown className="text-white" />}
+            icon={<FaAngleDown />}
             className="bg-sky-600 hover:bg-sky-700 hover:ring-sky-700"
             onClick={() => setOpenPoli(true)}
           />
@@ -50,17 +67,26 @@ const QueueRing = () => {
             onClick={() => setCreatePoli(true)}
           />
           {/* search */}
-          <SearchPoli className="w-[400px]" />
+          <SearchPoliQueue setPoliQueue={setPoliQueue} />
         </div>
         {/* card, table, queueRing */}
-        {poli.map((el) => (
-          <CardPoli
-            poliName={el.PoliName}
-            poliQueue={el.PoliQueue}
-            poliColor={el.PoliColor}
-          />
-        ))}
-      </div>
+        {poliQueue.length >= 1 &&
+          poliQueue.map((el) => (
+            <CardPoliQueue
+              key={el._id}
+              poliName={el.PoliName}
+              poliQueue={el.PoliQueue}
+              poliColor={el.PoliColor}
+            />
+          ))}
+        {poliQueue.length < 1 && (
+          <div className="flex h-[300px]">
+            <div className="text-3xl text-center font-bold italic m-auto">
+              Poli is Empty...
+            </div>
+          </div>
+        )}
+      </Container>
       {/* modal poli */}
       <ModalPoli openPoli={openPoli} setOpenPoli={setOpenPoli} />
       <ModalCreatePoli createPoli={createPoli} setCreatePoli={setCreatePoli} />

@@ -2,3 +2,11 @@
 - setup project fe-be
 - finishing backend 
 - finish remaining frontend
+- refactoring modal poliQueue, more readable - fe & be
+- refresh poliueue - fe
+- search poliqueue - fe
+- crud screen - fe
+- update hospital - fe 
+- queue ring socket - fe & be
+- auth + jwt - fe | - fe & be 
+- hosting domain - fe & be 

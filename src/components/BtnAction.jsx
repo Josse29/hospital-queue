@@ -7,7 +7,7 @@ const ButtonAction = (props) => {
   return (
     <div className="flex justify-center gap-2">
       <button
-        className="bg-green-500 hover:bg-green-600 hover:ring-green-400 hover:ring-2 hover:border-2 hover:border-[#dddddd] max-w-fit py-2 px-4 rounded-md cursor-pointer"
+        className="bg-green-600 hover:bg-green-700 hover:ring-green-700 hover:ring-2 hover:border-2 hover:border-[#dddddd] max-w-fit py-2 px-4 rounded-md cursor-pointer"
         onClick={btnDetail}
       >
         <FaEye className="text-xl text-white" />

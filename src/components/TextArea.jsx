@@ -1,16 +1,16 @@
 import React from "react";
 
 const TextArea = (props) => {
-  const { title, htmlFor1, className, ...rest } = props;
+  const { title, htmlForId, className, ...rest } = props;
   return (
     <>
-      <label htmlFor={htmlFor1} className="text-2xl block mb-2">
+      <label htmlFor={htmlForId} className="text-2xl block mb-2">
         {title}
       </label>
       <textarea
-        id={htmlFor1}
+        id={htmlForId}
         type="text"
-        className={`w-full border-slate-300 rounded-md focus:border-0 focus:ring-2 placeholder:text-slate-400 ${className}`}
+        className={`w-full border border-slate-300 rounded-md focus:border-0 focus:outline-2 placeholder:text-slate-400 ${className} px-3 py-2`}
         {...rest}
       />
     </>
