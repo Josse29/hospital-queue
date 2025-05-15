@@ -5,7 +5,7 @@ import {
   Login,
   NotFound,
   QueueRing,
-  Screen,
+  ScreenId,
   ScreenSetting,
   TakeQueue,
 } from "../pages";
@@ -16,7 +16,7 @@ const Route1 = () => {
       <Route path="/" element={<Login />} />
       <Route path="/queue-ring" element={<QueueRing />} />
       <Route path="/setting-screen" element={<ScreenSetting />} />
-      <Route path="/screen/:id" element={<Screen />} />
+      <Route path="/screen/:id" element={<ScreenId />} />
       <Route path="/take-queue/:id" element={<TakeQueue />} />
       <Route path="/about-us" element={<AboutUs />} />
       <Route path="*" element={<NotFound />} />

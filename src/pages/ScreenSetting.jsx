@@ -6,14 +6,23 @@ import { FaPlusSquare } from "react-icons/fa";
 import {
   BtnRefreshScreen,
   ModalCreateScreen,
+  ModalDeleteScreen,
   SearchScreen,
   TableScreen,
 } from "../features/Screen";
 import { getScreenAPI } from "../services/screen";
+import ModalUpdateScreen from "../features/Screen/ModalupdateScreen";
 
 const ScreenSetting = () => {
   const [createScreen, setCreateScreen] = useState(false);
+  const [dataScreen, setDataScreen] = useState({
+    ScreenId: "",
+    ScreenName: "",
+    ScreenPoliSelected: [],
+  });
   const [screen, setScreen] = useState([]);
+  const [updateScreen, setUpdateScreen] = useState(false);
+  const [deleteScreen, setDeleteScreen] = useState(false);
   const getScreen = async () => {
     try {
       const response = await getScreenAPI();
@@ -52,14 +61,32 @@ const ScreenSetting = () => {
         </div>
         {/* section second table */}
         <div className="mb-3">
-          <TableScreen screen={screen} />
+          <TableScreen
+            screen={screen}
+            setDataScreen={setDataScreen}
+            setDeleteScreen={setDeleteScreen}
+            setUpdateScreen={setUpdateScreen}
+          />
         </div>
-        {/* section modal */}
-        <ModalCreateScreen
-          createScreen={createScreen}
-          setCreateScreen={setCreateScreen}
-        />
       </Container>
+      {/* section modal */}
+      <ModalCreateScreen
+        createScreen={createScreen}
+        setCreateScreen={setCreateScreen}
+        getScreen={getScreen}
+      />
+      <ModalUpdateScreen
+        dataScreen={dataScreen}
+        updateScreen={updateScreen}
+        setUpdateScreen={setUpdateScreen}
+        getScreen={getScreen}
+      />
+      <ModalDeleteScreen
+        dataScreen={dataScreen}
+        deleteScreen={deleteScreen}
+        setDeleteScreen={setDeleteScreen}
+        getScreen={getScreen}
+      />
     </NavigationContainer>
   );
 };

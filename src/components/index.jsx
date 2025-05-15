@@ -4,6 +4,7 @@ import ButtonIcon from "./BtnIcon";
 import Button from "./Button";
 import Card from "./Card";
 import Container from "./Container";
+import HeaderPage from "./HeaderPage";
 import HeadPage from "./HeadPage";
 import InputDate from "./InputDate";
 import InputImg from "./InputImg";
@@ -23,6 +24,7 @@ export {
   ButtonAction,
   Card,
   HeadPage,
+  HeaderPage,
   InputText,
   InputRange,
   InputSearch,

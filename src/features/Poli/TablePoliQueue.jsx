@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Button, Table } from "../../components";
-import { FaBell } from "react-icons/fa6";
+import { Table } from "../../components";
+import BtnRingQueue from "./BtnRingQueue";
 
 const TablePoliQueue = (props) => {
-  const { poliQueue } = props;
+  const { poliId, poliQueue } = props;
   return (
     <Table>
       <Table.HeadRow>
@@ -25,14 +25,9 @@ const TablePoliQueue = (props) => {
               <Table.BodyCol title={el.Date} />
               <Table.BodyCol title={el.Time} className="text-center" />
               <Table.BodyCol title={el.PoliName} />
-              <Table.BodyCol title={el.PoliCode} className="text-center" />
+              <Table.BodyCol title={el.Code} className="text-center" />
               <Table.BodyCol
-                title={
-                  <Button
-                    title={<FaBell />}
-                    className="bg-amber-600 hover:bg-amber-700 hover:ring-amber-700"
-                  />
-                }
+                title={<BtnRingQueue data={el} poliId={poliId} />}
                 className="text-center"
               />
             </Table.BodyRow>

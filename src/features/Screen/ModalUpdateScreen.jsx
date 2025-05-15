@@ -1,18 +1,30 @@
-import React, { useState } from "react";
-import Modal from "../../components/Modal";
-import { ButtonIcon, InputText, TextArea } from "../../components";
-import Swal from "sweetalert2";
-import { createScreenAPI } from "../../services/screen";
+import React, { useEffect, useState } from "react";
+import { Button, InputText, Modal, TextArea } from "../../components";
 import SelectedListPoli from "./SelectedListPoli";
+import { updateScreenAPI } from "../../services/screen";
+import Swal from "sweetalert2";
 
-const ModalCreateScreen = (props) => {
-  const { createScreen, setCreateScreen, getScreen } = props;
+const ModalUpdateScreen = (props) => {
+  const { dataScreen, updateScreen, setUpdateScreen, getScreen } = props;
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
+    ScreenId: "",
     ScreenName: "",
     ScreenPoliSelected: [],
     ScreenInfo: "",
   });
+  useEffect(() => {
+    if (updateScreen) {
+      const { ScreenId, ScreenName, ScreenPoliSelected, ScreenInfo } =
+        dataScreen;
+      setFormData({
+        ScreenId,
+        ScreenName,
+        ScreenPoliSelected,
+        ScreenInfo,
+      });
+    }
+  }, [updateScreen]);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -24,9 +36,10 @@ const ModalCreateScreen = (props) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const { ScreenName, ScreenPoliSelected, ScreenInfo } = formData;
+      const { ScreenId, ScreenName, ScreenPoliSelected, ScreenInfo } = formData;
       const ScreenPoliSelectedId = ScreenPoliSelected.map((el) => el._id);
-      const successMsg = await createScreenAPI({
+      const successMsg = await updateScreenAPI({
+        ScreenId,
         ScreenName,
         ScreenPoliSelectedId,
         ScreenInfo,
@@ -35,13 +48,8 @@ const ModalCreateScreen = (props) => {
         title: successMsg.data.msg || successMsg,
         icon: "success",
       });
-      setFormData({
-        ScreenName: "",
-        ScreenPoliSelected: [],
-        ScreenInfo: "",
-      });
       await getScreen();
-      setCreateScreen(false);
+      setUpdateScreen(false);
     } catch (error) {
       Swal.fire({
         title: error.response.data.errMsg || error,
@@ -52,8 +60,8 @@ const ModalCreateScreen = (props) => {
     }
   };
   return (
-    <Modal openModal={createScreen} width="w-[700px]">
-      <Modal.Header headerText="Screen" className="bg-teal-600" />
+    <Modal openModal={updateScreen} width="w-[700px]">
+      <Modal.Header headerText="Screen" className="bg-teal-500" />
       <form onSubmit={handleSubmit}>
         <Modal.Body>
           {/* screen name */}
@@ -70,7 +78,7 @@ const ModalCreateScreen = (props) => {
           </div>
           {/* screen poli */}
           <SelectedListPoli
-            createScreen={createScreen}
+            createScreen={updateScreen}
             formData={formData}
             setFormData={setFormData}
           />
@@ -88,15 +96,16 @@ const ModalCreateScreen = (props) => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <ButtonIcon
+          <Button
             title="Cancel"
             type="button"
-            className="bg-slate-500 hover:bg-slate-600 hover:ring-slate-600"
-            onClick={() => setCreateScreen(false)}
+            onClick={() => setUpdateScreen(false)}
+            className="bg-slate-500 hover:bg-slate-700 hover:ring-slate-700"
           />
-          <ButtonIcon
+          <Button
             title={loading ? "wait..." : "Done"}
-            className="bg-teal-600 hover:bg-teal-700 hover:ring-teal-700"
+            type="submit"
+            className="bg-teal-500 hover:bg-teal-700 hover:ring-teal-700"
             disabled={loading ? true : false}
           />
         </Modal.Footer>
@@ -105,4 +114,4 @@ const ModalCreateScreen = (props) => {
   );
 };
 
-export default ModalCreateScreen;
+export default ModalUpdateScreen;

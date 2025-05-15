@@ -4,7 +4,7 @@ import TablePoliQueue from "./TablePoliQueue";
 import { FaDownload } from "react-icons/fa6";
 
 const CardPoliQueue = (props) => {
-  const { poliName, poliColor, poliQueue } = props;
+  const { poliId, poliName, poliColor, poliQueue } = props;
   return (
     <Card className="mb-6">
       <Card.Header
@@ -19,7 +19,7 @@ const CardPoliQueue = (props) => {
             className="bg-teal-500 hover:bg-teal-600 hover:ring-teal-700"
           />
         </div>
-        <TablePoliQueue poliQueue={poliQueue} />
+        <TablePoliQueue poliId={poliId} poliQueue={poliQueue} />
       </Card.Body>
     </Card>
   );

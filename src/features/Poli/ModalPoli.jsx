@@ -11,7 +11,7 @@ import UpdatePoli from "./UpdatePoli";
 import SearchPoli from "./SearchPoli";
 
 const ModalPoli = (props) => {
-  const { openPoli, setOpenPoli } = props;
+  const { openPoli, setOpenPoli, getPoliQueue } = props;
   const [poli, setPoli] = useState([]);
   const [method, setMethod] = useState("read");
   const [data, setData] = useState({
@@ -101,6 +101,7 @@ const ModalPoli = (props) => {
       {/* update */}
       {method === "update" && (
         <UpdatePoli
+          getPoliQueue={getPoliQueue}
           data={data}
           setData={setData}
           setOpenPoli={setOpenPoli}
@@ -111,6 +112,7 @@ const ModalPoli = (props) => {
       {/* delete */}
       {method === "delete" && (
         <DeletePoli
+          getPoliQueue={getPoliQueue}
           data={data}
           setData={setData}
           setOpenPoli={setOpenPoli}

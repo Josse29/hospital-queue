@@ -8,7 +8,7 @@ const getPoliAPI = async (req = "") => {
     throw error;
   }
 };
-const getPoliQueueAPI = async (req) => {
+const getPoliQueueAPI = async (req = "") => {
   try {
     const response = await api.get(`/poli/queue?search=${req}`);
     return response;
@@ -50,10 +50,33 @@ const updatePoliAPI = async (req) => {
     throw error;
   }
 };
+const printPoliQueueAPI = async (id) => {
+  try {
+    const response = await api.put(`/poli/print-queue/${id}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+const ringPoliQueue = async (req) => {
+  try {
+    const data = {
+      No: req.No,
+      Date: req.Date,
+      Time: req.Time,
+    };
+    const response = await api.put(`/poli/ring-queue/${req.Id}`, data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
 export {
   getPoliAPI,
   getPoliQueueAPI,
   createPoliAPI,
   deletePoliAPI,
   updatePoliAPI,
+  printPoliQueueAPI,
+  ringPoliQueue,
 };

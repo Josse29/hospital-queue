@@ -16,4 +16,13 @@ const formatDateTime = () => {
     timeNow,
   };
 };
-export { formatDateTime };
+const formatDateTime1 = () => {
+  const now = new Date();
+  const FormatDate = now.toISOString().split("T")[0];
+  const Hour = ("0" + now.getHours()).slice(-2);
+  const Minute = ("0" + now.getMinutes()).slice(-2);
+  const Second = ("0" + now.getSeconds()).slice(-2);
+  const Time = `${Hour}:${Minute}:${Second}`;
+  return { FormatDate, Time };
+};
+export { formatDateTime, formatDateTime1 };

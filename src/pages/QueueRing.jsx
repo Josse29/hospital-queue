@@ -74,6 +74,7 @@ const QueueRing = () => {
           poliQueue.map((el) => (
             <CardPoliQueue
               key={el._id}
+              poliId={el._id}
               poliName={el.PoliName}
               poliQueue={el.PoliQueue}
               poliColor={el.PoliColor}
@@ -88,8 +89,16 @@ const QueueRing = () => {
         )}
       </Container>
       {/* modal poli */}
-      <ModalPoli openPoli={openPoli} setOpenPoli={setOpenPoli} />
-      <ModalCreatePoli createPoli={createPoli} setCreatePoli={setCreatePoli} />
+      <ModalPoli
+        getPoliQueue={getPoliQueue}
+        openPoli={openPoli}
+        setOpenPoli={setOpenPoli}
+      />
+      <ModalCreatePoli
+        getPoliQueue={getPoliQueue}
+        createPoli={createPoli}
+        setCreatePoli={setCreatePoli}
+      />
     </NavigationContainer>
   );
 };

@@ -8,7 +8,11 @@ import UpdatePoli from "./UpdatePoli";
 import TablePoliQueue from "./TablePoliQueue";
 import SearchPoliQueue from "./SearchPoliQueue";
 import BtnRefreshPoliQueue from "./BtnRefreshPoliQueue";
+import ModalPrintQueue from "./ModalPrintQueue";
+import BtnRingQueue from "./BtnRingQueue";
+
 export {
+  BtnRingQueue,
   BtnRefreshPoliQueue,
   CardPoliQueue,
   ModalCreatePoli,
@@ -16,6 +20,7 @@ export {
   UpdatePoli,
   ListPoli,
   ModalPoli,
+  ModalPrintQueue,
   SearchPoli,
   TablePoliQueue,
   SearchPoliQueue,

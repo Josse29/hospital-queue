@@ -5,7 +5,7 @@ import { createPoliAPI } from "../../services/poli";
 import Swal from "sweetalert2";
 
 const ModalCreatePoli = (props) => {
-  const { createPoli, setCreatePoli } = props;
+  const { createPoli, setCreatePoli, getPoliQueue } = props;
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     PoliName: "",
@@ -35,6 +35,10 @@ const ModalCreatePoli = (props) => {
         PoliColor: `${Red},${Green},${Blue}`,
       };
       const successMsg = await createPoliAPI(req);
+      Swal.fire({
+        title: successMsg.data.msg || successMsg,
+        icon: "success",
+      });
       setFormData({
         PoliName: "",
         PoliCode: "",
@@ -42,14 +46,11 @@ const ModalCreatePoli = (props) => {
         Green: 0,
         Blue: 255,
       });
+      await getPoliQueue();
       setCreatePoli(false);
-      Swal.fire({
-        title: successMsg.data.msg,
-        icon: "success",
-      });
     } catch (error) {
       Swal.fire({
-        title: error.response.data.errMsg,
+        title: error.response.data.errMsg || error,
         icon: "error",
       });
     } finally {

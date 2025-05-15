@@ -4,7 +4,7 @@ import {
   formatCurrency2,
   unFormatCurrency,
 } from "./currency";
-import { formatDateTime } from "./dateTime";
+import { formatDateTime, formatDateTime1 } from "./dateTime";
 
 import { getImageBase64, validateExt } from "./Image";
 import { formatPercentage, formatPercentage1 } from "./percent";
@@ -12,6 +12,7 @@ import { getPoli } from "./poli";
 
 export {
   formatDateTime,
+  formatDateTime1,
   formatCurrency,
   formatCurrency1,
   formatCurrency2,

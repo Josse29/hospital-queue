@@ -4,7 +4,7 @@ import { updatePoliAPI } from "../../services/poli";
 import Swal from "sweetalert2";
 
 const UpdatePoli = (props) => {
-  const { data, setData, setOpenPoli, setMethod, method } = props;
+  const { getPoliQueue, data, setData, setOpenPoli, setMethod, method } = props;
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     PoliId: "",
@@ -51,19 +51,19 @@ const UpdatePoli = (props) => {
         PoliCode,
         PoliColor: `${Red},${Green},${Blue}`,
       };
-      const msg = await updatePoliAPI(data);
+      const successMsg = await updatePoliAPI(data);
       Swal.fire({
-        title: msg.data.msg,
+        title: successMsg.data.msg || successMsg,
         icon: "success",
       });
+      await getPoliQueue();
       setMethod("read");
       setOpenPoli(false);
     } catch (error) {
       Swal.fire({
-        title: error.response.data.errMsg,
+        title: error.response.data.errMsg || error,
         icon: "error",
       });
-      console.error(error);
     } finally {
       setLoading(false);
     }

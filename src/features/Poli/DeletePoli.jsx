@@ -6,7 +6,7 @@ import { FaCheck } from "react-icons/fa6";
 import Swal from "sweetalert2";
 
 const DeletePoli = (props) => {
-  const { data, setOpenPoli, setMethod, method } = props;
+  const { getPoliQueue, data, setOpenPoli, setMethod, method } = props;
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     PoliId: "",
@@ -33,6 +33,7 @@ const DeletePoli = (props) => {
         title: msg.data.msg || msg,
         icon: "success",
       });
+      await getPoliQueue();
       setMethod("read");
       setOpenPoli(false);
     } catch (error) {

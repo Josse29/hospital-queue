@@ -19,3 +19,42 @@
     transform: rotate(360deg);
   }
 }
+body::-webkit-scrollbar {
+  display: none;
+}
+/* scroll vertical */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 9px !important;
+}
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: #f1f1f1 !important;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #888 !important;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #555 !important;
+}
+/* scroll horizontal */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 9px;
+}
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #888;
+}
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+/* running text */
+.running-text-container {
+  width: 90%;
+  overflow: hidden;
+  white-space: nowrap;
+  margin: auto;
+}
+.running-text {
+  display: inline-block;
+}
