@@ -1,11 +1,12 @@
+import mongoose, { Types } from "mongoose";
 import Screen from "../models/Screen.js";
-import { capitalizeWord } from "../utils/index.js";
+import { capitalizeWord, formatDateTime } from "../utils/index.js";
 
 const createScreen = async (req, res) => {
-  const { ScreenName, ScreenPoli, ScreenInfo } = req.body;
+  const { ScreenName, ScreenPoliSelected, ScreenInfo } = req.body;
   try {
     const ScreenNameVal = capitalizeWord(ScreenName);
-    if (!ScreenNameVal || !ScreenPoli) {
+    if (!ScreenNameVal || ScreenPoliSelected.length === 0) {
       return res
         .status(400)
         .json({ errMsg: "Upppps, All Input are Required !" });
@@ -19,9 +20,13 @@ const createScreen = async (req, res) => {
         .status(409)
         .json({ errMsg: `${ScreenNameVal} - is already Existed !` });
     }
+    // just in case
+    // const existingScreens = await Screen.find({
+    //   ScreenPoli: { $in: ScreenPoli },
+    // });
     const newScreen = new Screen({
       ScreenName: ScreenNameVal,
-      ScreenPoli,
+      ScreenPoli: ScreenPoliSelected,
       ScreenInfo,
     });
     await newScreen.save();
@@ -33,10 +38,13 @@ const createScreen = async (req, res) => {
 const readScreen = async (req, res) => {
   const { search } = req.query;
   try {
-    const keyword = search ? { name: { $regex: search, $options: "i" } } : {};
+    const keyword = search
+      ? { ScreenName: { $regex: search, $options: "i" } }
+      : {};
     const screens = await Screen.find(keyword)
       .populate({
         path: "ScreenPoli",
+        select: "PoliName",
         options: { sort: { PoliName: 1 } },
       })
       .sort({ ScreenName: 1 });
@@ -57,12 +65,79 @@ const readScreenId = async (req, res) => {
     return res.status(500).json({ errMsg: error.message });
   }
 };
+const readScreenId1 = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { FormatDate } = formatDateTime();
+    const result = await Screen.aggregate([
+      {
+        $match: { _id: new mongoose.Types.ObjectId(id) },
+      },
+      {
+        $lookup: {
+          from: "polis",
+          localField: "ScreenPoli",
+          foreignField: "_id",
+          as: "ScreenPoli",
+        },
+      },
+      {
+        $addFields: {
+          ScreenPoli: {
+            $map: {
+              input: "$ScreenPoli",
+              as: "poli",
+              in: {
+                $mergeObjects: [
+                  "$$poli",
+                  {
+                    PoliQueue: {
+                      $slice: [
+                        {
+                          $sortArray: {
+                            input: {
+                              $filter: {
+                                input: "$$poli.PoliQueue",
+                                as: "queue",
+                                cond: {
+                                  $and: [
+                                    { $eq: ["$$queue.Date", FormatDate] },
+                                    { $lt: ["$$queue.CallTimes", 3] },
+                                  ],
+                                },
+                              },
+                            },
+                            sortBy: { Time: 1 },
+                          },
+                        },
+                        1, // ambil hanya 1 antrian
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+    ]);
+
+    if (!result.length) {
+      return res.status(404).json({ message: "Screen not found" });
+    }
+
+    res.json(result[0]);
+  } catch (error) {
+    res.status(500).json({ errMsg: error });
+  }
+};
 const updateScreen = async (req, res) => {
   const { id } = req.params;
   try {
-    const { ScreenName, ScreenPoli } = req.body;
+    const { ScreenName, ScreenPoliSelected, ScreenInfo } = req.body;
     const ScreenNameVal = capitalizeWord(ScreenName);
-    if (!ScreenNameVal || !ScreenPoli) {
+
+    if (!ScreenNameVal || ScreenPoliSelected.length === 0) {
       return res
         .status(400)
         .json({ errMsg: "Upppps, All Input are Required !" });
@@ -80,7 +155,8 @@ const updateScreen = async (req, res) => {
       {
         $set: {
           ScreenName: ScreenNameVal,
-          ScreenPoli,
+          ScreenPoli: ScreenPoliSelected,
+          ScreenInfo,
         },
       },
       { new: true }
@@ -107,4 +183,11 @@ const deleteScreen = async (req, res) => {
     return res.status(404).json({ errMsg: error.message });
   }
 };
-export { createScreen, readScreen, readScreenId, updateScreen, deleteScreen };
+export {
+  createScreen,
+  readScreen,
+  readScreenId,
+  readScreenId1,
+  updateScreen,
+  deleteScreen,
+};

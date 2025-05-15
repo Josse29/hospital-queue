@@ -17,7 +17,7 @@ const createPoli = async (req, res) => {
         .status(400)
         .json({ errMsg: "Upppps, All Input are Required !" });
     }
-    //valid exsited name Poli
+    // valid exsited name Poli
     const namePoliExsited = await Poli.findOne({
       PoliName: PoliNameVal,
     });
@@ -75,14 +75,10 @@ const readPoliQueue = async (req, res) => {
       ? { PoliName: { $regex: search, $options: "i" } }
       : {};
     const { FormatDate } = formatDateTime();
-    console.log(FormatDate);
     const poli = await Poli.aggregate([
       { $match: keyword },
       {
-        $project: {
-          PoliName: 1,
-          PoliCode: 1,
-          PoliColor: 1,
+        $addFields: {
           PoliQueue: {
             $filter: {
               input: "$PoliQueue",
@@ -197,16 +193,14 @@ const printPoliQueue = async (req, res) => {
     }
     const poli = poliAgg[0];
     const nextNo = poli.PoliQueueToday.length + 1;
-
     const newQueueData = {
       No: nextNo,
       Date: FormatDate,
       Time,
+      Code: `${poli.PoliCode} - ${nextNo}`,
       PoliName: poli.PoliName,
-      PoliCode: poli.PoliCode,
       CallTimes: 0,
     };
-
     await Poli.updateOne(
       { _id: id },
       {
@@ -218,7 +212,6 @@ const printPoliQueue = async (req, res) => {
         },
       }
     );
-
     return res.status(200).json(newQueueData);
   } catch (error) {
     return res.status(500).json({ errMsg: error.message });
@@ -226,7 +219,7 @@ const printPoliQueue = async (req, res) => {
 };
 const ringPoliQueue = async (req, res) => {
   const { id } = req.params;
-  const { No, Date } = req.body;
+  const { No, Date, Time } = req.body;
   try {
     const poli = await Poli.findOne({
       _id: id,
@@ -234,6 +227,7 @@ const ringPoliQueue = async (req, res) => {
         $elemMatch: {
           No,
           Date,
+          Time,
           CallTimes: { $lt: 3 },
         },
       },

@@ -3,14 +3,18 @@ Content-Type: application/json
 
 {
     "ScreenName":"Screen first",
-    "ScreenPoli":["681e2b899e565af610b7098e"]
+    "ScreenPoli":["681e2b899e565af610b7098e"],
+    "ScreenInfo":""
 }
 
 ###
-GET http://localhost:8000/api/screen
+GET http://localhost:8000/api/screen?search=
 
 ###
-GET http://localhost:8000/api/screen/681e2d75dd524c5f9171c381
+GET http://localhost:8000/api/screen/68241380acdf8ffebe2269a3
+
+###
+GET http://localhost:8000/api/screen/queue/68241380acdf8ffebe2269a3
 
 ###
 PUT http://localhost:8000/api/screen/681e2d75dd524c5f9171c381
@@ -18,7 +22,8 @@ Content-Type: application/json
 
 {
     "ScreenName":"Screen First",
-    "ScreenPoli":["6822e7dc191c0427ab4b39a8","6822d58f90248647c402716d"]
+    "ScreenPoli":["6822e7dc191c0427ab4b39a8","6822d58f90248647c402716d"],
+    "ScreenInfo":""
 }
 
 ###

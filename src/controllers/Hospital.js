@@ -6,10 +6,10 @@ import {
 } from "../utils/index.js";
 
 const getHospital = async (req, res) => {
-  const { search } = req.query;
+  // const { search } = req.query;
   try {
-    const keyword = search ? { name: { $regex: search, $options: "i" } } : {};
-    const hospital = await Hospital.find(keyword);
+    // const keyword = search ? { name: { $regex: search, $options: "i" } } : {};
+    const hospital = await Hospital.findOne();
     return res.status(200).json(hospital);
   } catch (error) {
     return res.status(500).json({ errMsg: error.message });

@@ -5,12 +5,14 @@ import {
   deleteScreen,
   readScreen,
   readScreenId,
+  readScreenId1,
   updateScreen,
 } from "../controllers/Screen.js";
 const router = express.Router();
 router.post("/", createScreen);
 router.get("/", readScreen);
 router.get("/:id", readScreenId);
+router.get("/queue/:id", readScreenId1);
 router.put("/:id", updateScreen);
 router.delete("/:id", deleteScreen);
 export default router;
