@@ -4,10 +4,9 @@ import { video } from "../assets";
 import { HeaderPage } from "../components";
 import { getScreenId1API } from "../services/screen";
 import { RunningText } from "../features/Hospital";
-import { AllContext } from "../context/AllProvider";
+import { PoliQueueActive } from "../features/Poli";
 
 const ScreenId = () => {
-  const [count, setCount] = useState(0);
   const { id } = useParams();
   const [queue, setQueue] = useState({
     ScreenName: "",
@@ -31,12 +30,7 @@ const ScreenId = () => {
     <div>
       <HeaderPage screenName={queue.ScreenName} />
       <div className="flex justify-center py-8 gap-7">
-        <div className="w-[380px] h-[380px] bg-teal-500 rounded-xl text-white flex">
-          <div className="m-auto">
-            <div className="text-8xl text-center mb-4 font-bold">{count}</div>
-            <div className="text-3xl text-center">Poli Gigi</div>
-          </div>
-        </div>
+        <PoliQueueActive />
         <video className="h-[380px]" autoPlay muted loop>
           <source src={video} type="video/webm" />
         </video>
@@ -53,11 +47,11 @@ const ScreenId = () => {
                     className="bg-teal-700 flex h-[150px] w-full rounded-md"
                     style={{ backgroundColor: `rgb(${el.PoliColor})` }}
                   >
-                    <div className="m-auto">
-                      <div className="text-white text-4xl mb-2 text-center font-bold">
+                    <div className="m-auto w-full p-2">
+                      <div className="text-white text-4xl mb-2 text-center font-bold truncate hover:text-wrap">
                         {no.Code}
                       </div>
-                      <div className="text-white text-xl text-center">
+                      <div className="text-white text-xl text-center truncate hover:text-wrap">
                         {no.PoliName}
                       </div>
                     </div>

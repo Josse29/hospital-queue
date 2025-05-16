@@ -39,10 +39,7 @@ const FootRow = ({ children }) => {
 const FootCol = (props) => {
   const { className, title, ...rest } = props;
   return (
-    <th
-      className={`px-4 py-2 ${className} overflow-hidden whitespace-nowrap text-ellipsis hover:whitespace-normal hover:overflow-visible hover:break-words`}
-      {...rest}
-    >
+    <th className={`px-4 py-2 ${className} truncate hover:text-wrap`} {...rest}>
       {title}
     </th>
   );

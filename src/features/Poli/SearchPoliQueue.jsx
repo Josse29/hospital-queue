@@ -1,23 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { InputSearch } from "../../components";
-import { getPoliQueueAPI } from "../../services/poli";
+import { AllContext } from "../../context/AllProvider";
 
-const SearchPoliQueue = (props) => {
-  const { setPoliQueue } = props;
+const SearchPoliQueue = () => {
+  const { getPoliQueue } = useContext(AllContext);
   const [search, setSearch] = useState("");
-  const getPoliQueue = async () => {
-    // setLoading(true);
-    try {
-      const response = await getPoliQueueAPI(search);
-      setPoliQueue(response.data);
-    } catch (error) {
-      throw error;
-    } finally {
-      // setLoading(false);
-    }
-  };
   const handleSearch = async () => {
-    await getPoliQueue();
+    await getPoliQueue(search);
   };
   return (
     <InputSearch>

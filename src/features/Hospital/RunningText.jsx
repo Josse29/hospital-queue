@@ -22,7 +22,6 @@ const RunningText = () => {
     animate();
     return () => cancelAnimationFrame(animationRef.current);
   }, []);
-
   return (
     <div
       className="fixed bottom-0 w-full p-2 bg-amber-500 overflow-hidden"

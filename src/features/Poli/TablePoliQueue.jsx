@@ -25,7 +25,10 @@ const TablePoliQueue = (props) => {
               <Table.BodyCol title={el.Date} />
               <Table.BodyCol title={el.Time} className="text-center" />
               <Table.BodyCol title={el.PoliName} />
-              <Table.BodyCol title={el.Code} className="text-center" />
+              <Table.BodyCol
+                title={`${el.Code} | ( ${el.CallTimes} x )`}
+                className="text-center"
+              />
               <Table.BodyCol
                 title={<BtnRingQueue data={el} poliId={poliId} />}
                 className="text-center"

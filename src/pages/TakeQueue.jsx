@@ -11,11 +11,13 @@ const TakeQueue = () => {
   const getScreenId = async () => {
     try {
       const response = await getScreenIdAPI(id);
+      console.log(response);
       const { ScreenName, ScreenPoli } = response.data;
       setScreenName(ScreenName);
       setPoliQueue(ScreenPoli);
       // setscreen(response.data);
     } catch (error) {
+      console.error(error);
       throw error;
     }
   };

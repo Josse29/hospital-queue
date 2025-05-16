@@ -8,7 +8,7 @@ const getPoliAPI = async (req = "") => {
     throw error;
   }
 };
-const getPoliQueueAPI = async (req = "") => {
+const getPoliQueueAPI = async (req) => {
   try {
     const response = await api.get(`/poli/queue?search=${req}`);
     return response;

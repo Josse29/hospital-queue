@@ -9,22 +9,13 @@ import {
   SearchPoliQueue,
 } from "../features/Poli";
 import ModalCreatePoli from "../features/Poli/ModalCreatePoli";
-import { getPoliQueueAPI } from "../services/poli";
 import { AllContext } from "../context/AllProvider";
 
 const QueueRing = () => {
-  const { socket } = useContext(AllContext);
+  const { socket, poliQueue, setPoliQueue, getPoliQueue } =
+    useContext(AllContext);
   const [openPoli, setOpenPoli] = useState(false);
   const [createPoli, setCreatePoli] = useState(false);
-  const [poliQueue, setPoliQueue] = useState([]);
-  const getPoliQueue = async () => {
-    try {
-      const response = await getPoliQueueAPI("");
-      setPoliQueue(response.data);
-    } catch (error) {
-      throw error;
-    }
-  };
   useEffect(() => {
     getPoliQueue();
     socket.on("poliQueueUpdated", (poliUpdated) => {
@@ -40,7 +31,6 @@ const QueueRing = () => {
         page="Queue Ring"
       />
       <Container>
-        {/* <div>{count}</div> */}
         {/* listpoli, createpoli, searchpoli */}
         <div className="flex justify-end gap-3 mb-5">
           {/* refresh */}
@@ -60,7 +50,7 @@ const QueueRing = () => {
             onClick={() => setCreatePoli(true)}
           />
           {/* search */}
-          <SearchPoliQueue setPoliQueue={setPoliQueue} />
+          <SearchPoliQueue />
         </div>
         {/* card, table, queueRing */}
         {poliQueue.length >= 1 &&

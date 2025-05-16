@@ -12,14 +12,14 @@ const CardPoliQueue = (props) => {
         style={{ backgroundColor: `rgb(${poliColor})` }}
       />
       <Card.Body>
+        <div className="flex justify-end mb-3">
+          <ButtonIcon
+            title="Download"
+            icon={<FaDownload />}
+            className="bg-teal-500 hover:bg-teal-600 hover:ring-teal-700"
+          />
+        </div>
         <div className="overflow-x-auto">
-          <div className="flex justify-end mb-3">
-            <ButtonIcon
-              title="Download"
-              icon={<FaDownload />}
-              className="bg-teal-500 hover:bg-teal-600 hover:ring-teal-700"
-            />
-          </div>
           <TablePoliQueue poliId={poliId} poliQueue={poliQueue} />
         </div>
       </Card.Body>
