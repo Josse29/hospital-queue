@@ -2,13 +2,23 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
+// socket
+import { createServer } from "node:http";
+import { Server } from "socket.io";
+// routes
 import poliRoutes from "./src/routes/Poli.js";
 import screenRoutes from "./src/routes/Screen.js";
 import hospitalRoutes from "./src/routes/Hospital.js";
-import { formatDateTime } from "./src/utils/index.js";
-// initial express app
+
+// initial express app & socket
 const app = express();
-// middleware cors
+const server = createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+  },
+});
+// cors
 app.use(cors());
 // configure dotenv
 dotenv.config();
@@ -23,20 +33,32 @@ app.use((req, res, next) => {
     errMsg: "Endpoint not found",
   });
 });
-// console.log(formatDateTime());
 // connect to mongodb atlas/compas
 const host = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/medical";
 const port = process.env.PORT || 8000;
-mongoose
-  .connect(host)
-  .then(() => {
-    console.log("connected to mongodb");
-  })
-  .catch((err) => {
-    console.log(err);
-    throw err;
+const connectToMongoDB = async () => {
+  try {
+    await mongoose.connect(host);
+    console.log("connected to mongodb succcess");
+  } catch (err) {
+    console.error("error:", err);
+  }
+};
+// socket init
+io.on("connection", (socket) => {
+  console.log("socket connected");
+  socket.on("poliQueueUpdated", (newPoli) => {
+    io.emit("poliQueueUpdated", newPoli);
   });
-// Start server
-app.listen(port, () => {
+  // socket.on("count", (counted) => {
+  //   io.emit("count", counted);
+  // });
+  socket.on("disconnect", () => {
+    console.log("client disconnected");
+  });
+});
+// start server and socket
+server.listen(port, async () => {
+  await connectToMongoDB();
   console.log(`Server running on http://localhost:${port}`);
 });

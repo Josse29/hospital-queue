@@ -201,7 +201,7 @@ const printPoliQueue = async (req, res) => {
       PoliName: poli.PoliName,
       CallTimes: 0,
     };
-    await Poli.updateOne(
+    await Poli.findByIdAndUpdate(
       { _id: id },
       {
         $push: {
@@ -210,9 +210,24 @@ const printPoliQueue = async (req, res) => {
             $sort: { Date: -1, Time: 1 },
           },
         },
-      }
+      },
+      { new: true }
     );
-    return res.status(200).json(newQueueData);
+    const updatedPoli = await Poli.aggregate([
+      {
+        $addFields: {
+          PoliQueue: {
+            $filter: {
+              input: "$PoliQueue",
+              as: "queue",
+              cond: { $eq: ["$$queue.Date", FormatDate] },
+            },
+          },
+        },
+      },
+      { $sort: { PoliName: 1 } },
+    ]);
+    return res.status(200).json({ newQueueData, updatedPoli });
   } catch (error) {
     return res.status(500).json({ errMsg: error.message });
   }
