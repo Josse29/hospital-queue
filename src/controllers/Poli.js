@@ -213,6 +213,7 @@ const printPoliQueue = async (req, res) => {
       },
       { new: true }
     );
+    // callback realtime
     const updatedPoli = await Poli.aggregate([
       {
         $addFields: {
@@ -236,27 +237,12 @@ const ringPoliQueue = async (req, res) => {
   const { id } = req.params;
   const { No, Date, Time } = req.body;
   try {
-    const poli = await Poli.findOne({
-      _id: id,
-      PoliQueue: {
-        $elemMatch: {
-          No,
-          Date,
-          Time,
-          CallTimes: { $lt: 3 },
-        },
-      },
-    });
-    if (!poli) {
-      return res.status(404).json({
-        errMsg: `Poli Queue Is Not Found or It's already called 3 times`,
-      });
-    }
-    await Poli.findOneAndUpdate(
+    const updatedPoli = await Poli.findOneAndUpdate(
       {
         _id: id,
         "PoliQueue.No": No,
         "PoliQueue.Date": Date,
+        "PoliQueue.Time": Time,
         "PoliQueue.CallTimes": { $lt: 3 },
       },
       {
@@ -266,8 +252,13 @@ const ringPoliQueue = async (req, res) => {
       },
       { new: true }
     );
+    if (!updatedPoli) {
+      return res.status(404).json({
+        errMsg: `Poli Queue Is Not Found or It's already called 3 times`,
+      });
+    }
     return res.status(200).json({
-      msg: `Nomor Antrian ${No} ke ${poli.PoliName}`,
+      msg: `Nomor Antrian ${No} ke ${updatedPoli.PoliName}`,
     });
   } catch (error) {
     return res.status(500).json({ errMsg: error.message });

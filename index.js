@@ -9,7 +9,6 @@ import { Server } from "socket.io";
 import poliRoutes from "./src/routes/Poli.js";
 import screenRoutes from "./src/routes/Screen.js";
 import hospitalRoutes from "./src/routes/Hospital.js";
-
 // initial express app & socket
 const app = express();
 const server = createServer(app);
@@ -49,6 +48,9 @@ io.on("connection", (socket) => {
   console.log("socket connected");
   socket.on("poliQueueUpdated", (newPoli) => {
     io.emit("poliQueueUpdated", newPoli);
+  });
+  socket.on("poliQueueActived", (activeNo) => {
+    io.emit("poliQueueActived", activeNo);
   });
   // socket.on("count", (counted) => {
   //   io.emit("count", counted);

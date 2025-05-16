@@ -1,4 +1,4 @@
-import mongoose, { Types } from "mongoose";
+import { Types } from "mongoose";
 import Screen from "../models/Screen.js";
 import { capitalizeWord, formatDateTime } from "../utils/index.js";
 
@@ -53,10 +53,15 @@ const readScreen = async (req, res) => {
     return res.status(500).json({ errMsg: error.message });
   }
 };
+// for print queue
 const readScreenId = async (req, res) => {
   const { id } = req.params;
   try {
-    const screen = await Screen.findById(id).populate("ScreenPoli");
+    const screen = await Screen.findById(id).populate({
+      path: "ScreenPoli",
+      select: "PoliName PoliColor",
+      options: { sort: { PoliName: 1 } },
+    });
     if (!screen) {
       return res.status(404).json({ errMsg: `Screen - Not Found !` });
     }
@@ -65,13 +70,14 @@ const readScreenId = async (req, res) => {
     return res.status(500).json({ errMsg: error.message });
   }
 };
+// for main screen queue
 const readScreenId1 = async (req, res) => {
   try {
     const { id } = req.params;
     const { FormatDate } = formatDateTime();
     const result = await Screen.aggregate([
       {
-        $match: { _id: new mongoose.Types.ObjectId(id) },
+        $match: { _id: new Types.ObjectId(id) },
       },
       {
         $lookup: {
@@ -110,7 +116,7 @@ const readScreenId1 = async (req, res) => {
                             sortBy: { Time: 1 },
                           },
                         },
-                        1, // ambil hanya 1 antrian
+                        1,
                       ],
                     },
                   },
@@ -133,10 +139,9 @@ const readScreenId1 = async (req, res) => {
 };
 const updateScreen = async (req, res) => {
   const { id } = req.params;
+  const { ScreenName, ScreenPoliSelected, ScreenInfo } = req.body;
   try {
-    const { ScreenName, ScreenPoliSelected, ScreenInfo } = req.body;
     const ScreenNameVal = capitalizeWord(ScreenName);
-
     if (!ScreenNameVal || ScreenPoliSelected.length === 0) {
       return res
         .status(400)
