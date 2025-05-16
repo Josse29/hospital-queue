@@ -10,6 +10,7 @@ import SearchPoliQueue from "./SearchPoliQueue";
 import BtnRefreshPoliQueue from "./BtnRefreshPoliQueue";
 import ModalPrintQueue from "./ModalPrintQueue";
 import BtnRingQueue from "./BtnRingQueue";
+import PrintQueue from "./PrintQueue";
 
 export {
   BtnRingQueue,
@@ -21,6 +22,7 @@ export {
   ListPoli,
   ModalPoli,
   ModalPrintQueue,
+  PrintQueue,
   SearchPoli,
   TablePoliQueue,
   SearchPoliQueue,

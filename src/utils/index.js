@@ -9,6 +9,7 @@ import { formatDateTime, formatDateTime1 } from "./dateTime";
 import { getImageBase64, validateExt } from "./Image";
 import { formatPercentage, formatPercentage1 } from "./percent";
 import { getPoli } from "./poli";
+import speechAndBell from "./speechAndBell";
 
 export {
   formatDateTime,
@@ -22,4 +23,5 @@ export {
   validateExt,
   getImageBase64,
   getPoli,
+  speechAndBell,
 };

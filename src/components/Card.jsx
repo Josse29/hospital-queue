@@ -19,7 +19,7 @@ const Header = (props) => {
   );
 };
 const Body = ({ children }) => {
-  return <div className="p-4 rounded-b-2xl overflow-x-auto ">{children}</div>;
+  return <div className="p-4 rounded-b-2xl overflow-x-auto">{children}</div>;
 };
 Card.Header = Header;
 Card.Body = Body;

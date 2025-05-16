@@ -1,18 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NavigationContainer } from "./../navigation";
-import {
-  FaAngleDown,
-  FaBell,
-  FaFolderPlus,
-  FaRotateRight,
-} from "react-icons/fa6";
-import {
-  Button,
-  ButtonIcon,
-  Container,
-  HeadPage,
-  InputSearch,
-} from "../components";
+import { FaAngleDown, FaBell, FaFolderPlus } from "react-icons/fa6";
+import { ButtonIcon, Container, HeadPage } from "../components";
 import {
   BtnRefreshPoliQueue,
   CardPoliQueue,
@@ -21,24 +10,27 @@ import {
 } from "../features/Poli";
 import ModalCreatePoli from "../features/Poli/ModalCreatePoli";
 import { getPoliQueueAPI } from "../services/poli";
+import { AllContext } from "../context/AllProvider";
 
 const QueueRing = () => {
+  const { socket } = useContext(AllContext);
   const [openPoli, setOpenPoli] = useState(false);
   const [createPoli, setCreatePoli] = useState(false);
   const [poliQueue, setPoliQueue] = useState([]);
   const getPoliQueue = async () => {
-    // setLoading(true);
     try {
       const response = await getPoliQueueAPI("");
       setPoliQueue(response.data);
     } catch (error) {
       throw error;
-    } finally {
-      // setLoading(false);
     }
   };
   useEffect(() => {
     getPoliQueue();
+    socket.on("poliQueueUpdated", (poliUpdated) => {
+      setPoliQueue(poliUpdated);
+    });
+    return () => socket.off("poliQueueUpdated");
   }, []);
   return (
     <NavigationContainer>
@@ -48,6 +40,7 @@ const QueueRing = () => {
         page="Queue Ring"
       />
       <Container>
+        {/* <div>{count}</div> */}
         {/* listpoli, createpoli, searchpoli */}
         <div className="flex justify-end gap-3 mb-5">
           {/* refresh */}

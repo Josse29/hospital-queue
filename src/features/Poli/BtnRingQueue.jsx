@@ -7,6 +7,7 @@ const BtnRingQueue = (props) => {
   const { poliId, data } = props;
   const { No, Date, Time, CallTimes } = data;
   const [loading, setLoading] = useState(false);
+
   const handleRing = async () => {
     setLoading(true);
     try {

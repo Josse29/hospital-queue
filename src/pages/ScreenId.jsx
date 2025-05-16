@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { video } from "../assets";
 import { HeaderPage } from "../components";
 import { getScreenId1API } from "../services/screen";
 import { RunningText } from "../features/Hospital";
+import { AllContext } from "../context/AllProvider";
 
 const ScreenId = () => {
+  const [count, setCount] = useState(0);
   const { id } = useParams();
   const [queue, setQueue] = useState({
     ScreenName: "",
@@ -31,7 +33,7 @@ const ScreenId = () => {
       <div className="flex justify-center py-8 gap-7">
         <div className="w-[380px] h-[380px] bg-teal-500 rounded-xl text-white flex">
           <div className="m-auto">
-            <div className="text-8xl text-center mb-4 font-bold">G - 1</div>
+            <div className="text-8xl text-center mb-4 font-bold">{count}</div>
             <div className="text-3xl text-center">Poli Gigi</div>
           </div>
         </div>
