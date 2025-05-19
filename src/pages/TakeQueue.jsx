@@ -11,7 +11,6 @@ const TakeQueue = () => {
   const getScreenId = async () => {
     try {
       const response = await getScreenIdAPI(id);
-      console.log(response);
       const { ScreenName, ScreenPoli } = response.data;
       setScreenName(ScreenName);
       setPoliQueue(ScreenPoli);
@@ -27,7 +26,8 @@ const TakeQueue = () => {
   return (
     <div>
       <HeaderPage screenName={screenName} />
-      <div className="flex justify-center py-8">
+      <div className="text-center text-5xl my-10">Print Queue</div>
+      <div className="flex justify-center">
         {/* existed */}
         {poliQueue.length >= 1 && (
           <div className="grid grid-cols-4 gap-5">

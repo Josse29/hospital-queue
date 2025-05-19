@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { FaBell } from "react-icons/fa6";
 import { formatDateTime } from "../utils";
 
 const HeadPage = (props) => {

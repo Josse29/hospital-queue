@@ -1,21 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button } from "../../components";
 import { FaRotateRight } from "react-icons/fa6";
-import { getPoliQueueAPI } from "../../services/poli";
+import { AllContext } from "../../context/AllProvider";
 
 const BtnRefreshPoliQueue = (props) => {
-  const { setPoliQueue } = props;
-  const getPoliQueue = async () => {
-    // setLoading(true);
-    try {
-      const response = await getPoliQueueAPI("");
-      setPoliQueue(response.data);
-    } catch (error) {
-      throw error;
-    } finally {
-      // setLoading(false);
-    }
-  };
+  const { getPoliQueue } = useContext(AllContext);
   const handleRefresh = async () => {
     await getPoliQueue();
   };

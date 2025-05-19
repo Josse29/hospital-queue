@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { NavigationContainer } from "./../navigation";
 import { FaAngleDown, FaBell, FaFolderPlus } from "react-icons/fa6";
-import { ButtonIcon, Container, HeadPage } from "../components";
+import { Button, ButtonIcon, Container, HeadPage } from "../components";
 import {
   BtnRefreshPoliQueue,
   CardPoliQueue,
@@ -12,16 +12,32 @@ import ModalCreatePoli from "../features/Poli/ModalCreatePoli";
 import { AllContext } from "../context/AllProvider";
 
 const QueueRing = () => {
-  const { socket, poliQueue, setPoliQueue, getPoliQueue } =
+  const { socket, poliQueue, setPoliQueue, getPoliQueue, setLoadingRing } =
     useContext(AllContext);
   const [openPoli, setOpenPoli] = useState(false);
   const [createPoli, setCreatePoli] = useState(false);
+  // first updated
   useEffect(() => {
     getPoliQueue();
-    socket.on("poliQueueUpdated", (poliUpdated) => {
-      setPoliQueue(poliUpdated);
+    socket.on("poli:print", async () => {
+      await getPoliQueue();
     });
-    return () => socket.off("poliQueueUpdated");
+    return () => socket.off("poli:print");
+  }, []);
+  // when ring
+  const ringTimeOut = useRef(null);
+  useEffect(() => {
+    socket.on("poliUpdated:ring", async () => {
+      clearTimeout(ringTimeOut.current);
+      await getPoliQueue();
+      ringTimeOut.current = setTimeout(() => {
+        setLoadingRing(false);
+      }, 1000);
+    });
+    return () => {
+      socket.off("poliUpdated:ring");
+      clearTimeout(ringTimeOut.current);
+    };
   }, []);
   return (
     <NavigationContainer>

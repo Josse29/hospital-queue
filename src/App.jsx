@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { BrowserRouter } from "react-router";
 import { AllProvider } from "./context/AllProvider";
 import { Route1 } from "./routes";

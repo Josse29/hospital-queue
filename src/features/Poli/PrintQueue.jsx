@@ -11,9 +11,8 @@ const PrintQueue = (props) => {
   const handlePrint = async (id) => {
     try {
       const response = await printPoliQueueAPI(id);
-      const { newQueueData, updatedPoli } = response.data;
-      setPrintQueue(newQueueData || response);
-      socket.emit("poliQueueUpdated", updatedPoli);
+      setPrintQueue(response.data || response);
+      socket.emit("poli:print");
       setOpenPrint(true);
     } catch (error) {
       setOpenPrint(false);

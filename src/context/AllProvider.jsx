@@ -6,19 +6,24 @@ export const AllContext = createContext();
 export const AllProvider = ({ children }) => {
   // user || auth
   const [logout, setLogout] = useState(false);
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer "token"`,
+    },
+  };
   // socket
   const socket = io("http://localhost:8000");
   // poliqueue
   const [poliQueue, setPoliQueue] = useState([]);
-  const getPoliQueue = async (req = "") => {
+  const getPoliQueue = async (search = "") => {
     try {
-      const response = await getPoliQueueAPI(req);
+      const response = await getPoliQueueAPI(search);
       setPoliQueue(response.data);
     } catch (error) {
       throw error;
     }
   };
-  // ring queue
   const [loadingRing, setLoadingRing] = useState(false);
   return (
     <AllContext.Provider

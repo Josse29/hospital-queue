@@ -16,9 +16,9 @@ const Modal = (props) => {
   return (
     <AnimatePresence>
       {openModal && (
-        <div className="fixed inset-0 flex justify-center items-center h-screen">
+        <div className="fixed z-20 inset-0 flex justify-center items-center h-screen">
           {/* Overlay background */}
-          <div className="fixed inset-0 bg-zinc-400 opacity-35" />
+          <div className="fixed inset-0 bg-zinc-400 opacity-55" />
           <motion.div
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}

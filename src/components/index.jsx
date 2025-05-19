@@ -26,6 +26,7 @@ export {
   HeadPage,
   HeaderPage,
   InputText,
+  InputImg,
   InputRange,
   InputSearch,
   InputPassword,

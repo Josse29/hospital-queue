@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import Modal from "../../components/Modal";
+import { Modal } from "../../components/";
 import { AllContext } from "../../context/AllProvider";
 import { FaCheck, FaExclamationTriangle, FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router";
@@ -22,14 +22,14 @@ const ModalLogout = () => {
           type="button"
           title="No"
           icon={<FaTimes />}
-          className="bg-slate-500 hover:bg-slate-600 hover:ring-slate-400 hover:cursor-pointer"
+          className="bg-slate-500 hover:bg-slate-700 hover:ring-slate-700 hover:cursor-pointer"
           onClick={() => setLogout(false)}
         />
         <ButtonIcon
           type="button"
           title="Sure"
           icon={<FaCheck />}
-          className="bg-red-600 hover:bg-red-700 hover:ring-red-500 hover:cursor-pointer"
+          className="bg-red-600 hover:bg-red-700 hover:ring-red-700 hover:cursor-pointer"
           onClick={() => {
             setLogout(false);
             // setUserLogin({});

@@ -66,7 +66,7 @@ const InputImg = (props) => {
       <input
         id="img"
         type="file"
-        className={`border-slate-300 w-full rounded-md focus:ring-2 ${className}`}
+        className={`border border-slate-300  w-full rounded-md focus:outline-2 ${className} px-3 py-2 text-slate-500`}
         onChange={handleFileChange}
         ref={imgRef}
       />

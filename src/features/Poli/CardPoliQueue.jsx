@@ -1,7 +1,7 @@
 import React from "react";
-import { ButtonIcon, Card } from "../../components";
+import { Card } from "../../components";
 import TablePoliQueue from "./TablePoliQueue";
-import { FaDownload } from "react-icons/fa6";
+import BtnDownloadPoliQueue from "./BtnDownloadPoliQueue";
 
 const CardPoliQueue = (props) => {
   const { poliId, poliName, poliColor, poliQueue } = props;
@@ -13,11 +13,7 @@ const CardPoliQueue = (props) => {
       />
       <Card.Body>
         <div className="flex justify-end mb-3">
-          <ButtonIcon
-            title="Download"
-            icon={<FaDownload />}
-            className="bg-teal-500 hover:bg-teal-600 hover:ring-teal-700"
-          />
+          <BtnDownloadPoliQueue poliId={poliId} />
         </div>
         <div className="overflow-x-auto">
           <TablePoliQueue poliId={poliId} poliQueue={poliQueue} />

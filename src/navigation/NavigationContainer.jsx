@@ -9,7 +9,7 @@ import { Link, useLocation } from "react-router";
 const Top = () => {
   const { setLogout } = useContext(AllContext);
   return (
-    <div className="fixed top-0 w-full h-[80px] flex bg-cyan-700">
+    <div className="fixed top-0 z-10 w-full h-[80px] flex bg-cyan-700">
       {/* first section */}
       <div className="w-[210px] flex">
         <FaBars className="m-auto text-white text-2xl" />
@@ -56,7 +56,7 @@ const SideItem = (props) => {
 };
 const Side = () => {
   return (
-    <div className="w-[210px] fixed top-[80px] bottom-0 bg-cyan-900">
+    <div className="w-[210px] fixed z-10 top-[80px] bottom-0 bg-cyan-900">
       <div className=" h-screen flex flex-col justify-start p-3">
         <SideItem to="/queue-ring" icon={<FaBell />} page="Queue Ring" />
         <SideItem to="/setting-screen" icon={<FaTv />} page="Setting Screen" />

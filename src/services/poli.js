@@ -71,9 +71,18 @@ const ringPoliQueue = async (req) => {
     throw error;
   }
 };
+const getPoliQueueIdAPI = async (id) => {
+  try {
+    const poliQueueId = await api.get(`/poli/${id}`);
+    return poliQueueId;
+  } catch (error) {
+    throw error;
+  }
+};
 export {
   getPoliAPI,
   getPoliQueueAPI,
+  getPoliQueueIdAPI,
   createPoliAPI,
   deletePoliAPI,
   updatePoliAPI,
