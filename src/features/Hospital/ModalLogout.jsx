@@ -4,10 +4,26 @@ import { AllContext } from "../../context/AllProvider";
 import { FaCheck, FaExclamationTriangle, FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import { ButtonIcon } from "../../components";
+import { logoutAPI } from "../../services/hospital";
 
 const ModalLogout = () => {
-  const { logout, setLogout } = useContext(AllContext);
+  const { logout, setLogout, loginId, setLoginId } = useContext(AllContext);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const handleLogout = async () => {
+    setLoading(true);
+    try {
+      await logoutAPI(loginId);
+      setLoginId(null);
+      setLogout(false);
+      localStorage.removeItem("verifyToken");
+      navigate("/");
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <Modal openModal={logout} width="w-[550px]">
       <Modal.Header headerText="Logout" className="bg-red-500 font-bold" />
@@ -26,16 +42,16 @@ const ModalLogout = () => {
           onClick={() => setLogout(false)}
         />
         <ButtonIcon
-          type="button"
+          type="submit"
           title="Sure"
           icon={<FaCheck />}
-          className="bg-red-600 hover:bg-red-700 hover:ring-red-700 hover:cursor-pointer"
-          onClick={() => {
-            setLogout(false);
-            // setUserLogin({});
-            // localStorage.removeItem("verifyToken");co
-            navigate("/");
-          }}
+          disabled={loading ? true : false}
+          className={`bg-red-600 hover:bg-red-700 hover:ring-red-700 ${
+            loading
+              ? "opacity-50 cursor-not-allowed"
+              : "opacity-100 cursor-pointer"
+          }`}
+          onClick={handleLogout}
         />
       </Modal.Footer>
     </Modal>

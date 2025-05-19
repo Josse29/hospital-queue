@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { FaBars, FaBell, FaHospitalUser, FaTv } from "react-icons/fa6";
 import { Logo } from "../assets";
 import { FaSignOutAlt } from "react-icons/fa";
@@ -7,7 +7,10 @@ import { AllContext } from "../context/AllProvider";
 import { Link, useLocation } from "react-router";
 
 const Top = () => {
-  const { setLogout } = useContext(AllContext);
+  const { setLogout, getHospital1, hospital } = useContext(AllContext);
+  useEffect(() => {
+    getHospital1();
+  }, []);
   return (
     <div className="fixed top-0 z-10 w-full h-[80px] flex bg-cyan-700">
       {/* first section */}
@@ -18,12 +21,16 @@ const Top = () => {
       <div className="w-full flex justify-between items-center px-7">
         {/* first */}
         <div className="flex gap-5">
-          <img src={Logo} alt="" className="h-[35px] m-auto" />
+          <img
+            src={hospital.HospitalLogo || Logo}
+            alt=""
+            className="h-[35px] m-auto"
+          />
           <div>
             <div className="text-white text-2xl">
-              Queue Ring - Hospital Name
+              Queue Ring - {hospital.HospitalName}
             </div>
-            <div className="text-white text-xl">Address</div>
+            <div className="text-white text-xl">{hospital.HospitalAddress}</div>
           </div>
         </div>
         {/* second */}

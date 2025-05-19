@@ -1,6 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
+import { AllContext } from "../../context/AllProvider";
 
 const RunningText = () => {
+  const { hospital } = useContext(AllContext);
   const containerRef = useRef(null);
   const textRef = useRef(null);
   const animationRef = useRef(null);
@@ -32,7 +34,7 @@ const RunningText = () => {
         ref={textRef}
         style={{ willChange: "transform" }}
       >
-        Layanan Jam Buka Layanan Kami adalah Pukul 09 : 00 s.d 21.00 ..
+        {hospital.HospitalMarquee}
       </span>
     </div>
   );

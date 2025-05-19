@@ -5,7 +5,7 @@ import { createPoliAPI } from "../../services/poli";
 import Swal from "sweetalert2";
 
 const ModalCreatePoli = (props) => {
-  const { createPoli, setCreatePoli, getPoliQueue } = props;
+  const { createPoli, setCreatePoli, getPoliQueue, Authorization } = props;
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     PoliName: "",

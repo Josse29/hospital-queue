@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { getHospitalAPI, updateHospitalAPI } from "../../services/hospital";
 import { Button, InputImg, InputText, TextArea } from "../../components";
+import Swal from "sweetalert2";
+import { AllContext } from "../../context/AllProvider";
 
 const FormUpdateHospital = () => {
+  const { getHospital1 } = useContext(AllContext);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     HospitalId: "",
@@ -10,10 +13,12 @@ const FormUpdateHospital = () => {
     HospitalAddress: "",
     HospitalPhone: "",
     HospitalEmail: "",
-    HospitalLogo: "",
     HospitalInfo: "",
     HospitalMarquee: "",
+    img: "",
   });
+  const [img, setImg] = useState(false);
+  const imgRef = useRef(null);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -24,8 +29,30 @@ const FormUpdateHospital = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    const {
+      HospitalId,
+      HospitalName,
+      HospitalAddress,
+      HospitalPhone,
+      HospitalEmail,
+      img,
+      HospitalInfo,
+      HospitalMarquee,
+    } = formData;
     try {
-      const successMsg = await updateHospitalAPI(formData);
+      const req = {
+        HospitalId,
+        HospitalName,
+        HospitalAddress,
+        HospitalPhone,
+        HospitalEmail,
+        HospitalLogo: img,
+        HospitalInfo,
+        HospitalMarquee,
+      };
+      const successMsg = await updateHospitalAPI(req);
+      await getHospital();
+      await getHospital1();
       Swal.fire({
         title: successMsg.data.msg || successMsg,
         icon: "success",
@@ -44,6 +71,7 @@ const FormUpdateHospital = () => {
     setLoading(true);
     try {
       const { data } = await getHospitalAPI();
+      console.log(data);
       const {
         _id,
         HospitalName,
@@ -60,10 +88,15 @@ const FormUpdateHospital = () => {
         HospitalAddress,
         HospitalPhone,
         HospitalEmail,
-        HospitalLogo,
+        img: HospitalLogo,
         HospitalInfo,
         HospitalMarquee,
       });
+      if (HospitalLogo) {
+        setImg(true);
+      } else {
+        setImg(false);
+      }
     } catch (error) {
       throw error;
     } finally {
@@ -80,7 +113,7 @@ const FormUpdateHospital = () => {
         <InputText
           title="Hospital Name"
           htmlForId="hospitalName"
-          className="outline-teal-400"
+          className="outline-teal-400 capitalize"
           onChange={handleChange}
           value={formData.HospitalName}
           name="HospitalName"
@@ -92,7 +125,7 @@ const FormUpdateHospital = () => {
         <InputText
           title="Hospital Address"
           htmlForId="hospitalAddress"
-          className="outline-teal-400"
+          className="outline-teal-400 capitalize"
           onChange={handleChange}
           value={formData.HospitalAddress}
           name="HospitalAddress"
@@ -119,20 +152,29 @@ const FormUpdateHospital = () => {
           className="outline-teal-400"
           onChange={handleChange}
           value={formData.HospitalEmail}
-          name="HospitalPhone"
+          name="HospitalEmail"
           placeholder="Ex : hospital@gmail.com"
         />
       </div>
       {/* hospital logo */}
       <div className="mb-5">
-        <InputImg title="Hospital Image" className="outline-teal-500" />
+        <InputImg
+          title="Hospital Image"
+          className="outline-teal-500"
+          img={img}
+          setImg={setImg}
+          imgRef={imgRef}
+          formData={formData}
+          setFormData={setFormData}
+          setLoading={setLoading}
+        />
       </div>
       {/* HospitalInfo */}
       <div className="mb-5">
         <TextArea
           title="Hospital Information"
           htmlForId="hospitalInfo"
-          className="outline-teal-400"
+          className="outline-teal-400 capitalize"
           onChange={handleChange}
           value={formData.HospitalInfo}
           name="HospitalInfo"
@@ -144,7 +186,7 @@ const FormUpdateHospital = () => {
         <TextArea
           title="Hospital Marquee"
           htmlForId="hospitalMarquee"
-          className="outline-teal-400"
+          className="outline-teal-400 capitalize"
           onChange={handleChange}
           value={formData.HospitalMarquee}
           name="HospitalMarquee"

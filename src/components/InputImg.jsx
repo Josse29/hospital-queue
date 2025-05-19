@@ -53,14 +53,14 @@ const InputImg = (props) => {
       </label>
       {/* displayed img */}
       {img && (
-        <div className="relative">
+        <div className="relative w-[50%]">
           <div
             className="absolute right-[-10px] top-[-15px] w-[35px] h-[35px] flex justify-center items-center bg-red-600 rounded-full cursor-pointer"
             onClick={clearImage}
           >
             <FaTimes className="text-white" />
           </div>
-          <img src={formData.img} alt="" className="my-3 w-full" />
+          <img src={formData.img} alt="" className="my-3" />
         </div>
       )}
       <input
