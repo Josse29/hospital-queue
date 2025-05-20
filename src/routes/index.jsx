@@ -1,3 +1,3 @@
-import Route1 from "./route1";
+import Route1 from "./Route1";
 
 export { Route1 };
