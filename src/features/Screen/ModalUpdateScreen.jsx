@@ -15,6 +15,7 @@ const ModalUpdateScreen = (props) => {
   });
   useEffect(() => {
     if (updateScreen) {
+      setLoading(true);
       const { ScreenId, ScreenName, ScreenPoliSelected, ScreenInfo } =
         dataScreen;
       setFormData({
@@ -23,6 +24,7 @@ const ModalUpdateScreen = (props) => {
         ScreenPoliSelected,
         ScreenInfo,
       });
+      setLoading(false);
     }
   }, [updateScreen]);
   const handleChange = (e) => {

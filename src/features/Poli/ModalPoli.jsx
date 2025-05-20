@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Modal } from "../../components";
-import { deletePoliAPI, getPoliAPI, updatePoliAPI } from "../../services/poli";
+import { getPoliAPI } from "../../services/poli";
 import ListPoli from "./ListPoli";
 import DeletePoli from "./DeletePoli";
-import { ButtonIcon } from "../../components";
-import { FaCheck } from "react-icons/fa6";
-import { FaTimes } from "react-icons/fa";
-import Swal from "sweetalert2";
 import UpdatePoli from "./UpdatePoli";
 import SearchPoli from "./SearchPoli";
 

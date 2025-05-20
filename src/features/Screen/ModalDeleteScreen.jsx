@@ -35,11 +35,13 @@ const ModalDeleteScreen = (props) => {
   };
   useEffect(() => {
     if (deleteScreen) {
+      setLoading(true);
       const { ScreenId, ScreenName } = dataScreen;
       setFormData({
         ScreenId,
         ScreenName,
       });
+      setLoading(false);
     }
   }, [deleteScreen]);
   return (
