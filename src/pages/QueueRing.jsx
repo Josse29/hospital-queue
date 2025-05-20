@@ -6,9 +6,9 @@ import {
   BtnRefreshPoliQueue,
   CardPoliQueue,
   ModalPoli,
+  ModalCreatePoli,
   SearchPoliQueue,
 } from "../features/Poli";
-import ModalCreatePoli from "../features/Poli/ModalCreatePoli";
 import { AllContext } from "../context/AllProvider";
 
 const QueueRing = () => {

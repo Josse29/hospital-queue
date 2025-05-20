@@ -7,11 +7,11 @@ import {
   BtnRefreshScreen,
   ModalCreateScreen,
   ModalDeleteScreen,
+  ModalUpdateScreen,
   SearchScreen,
   TableScreen,
 } from "../features/Screen";
 import { getScreenAPI } from "../services/screen";
-import ModalUpdateScreen from "../features/Screen/ModalupdateScreen";
 
 const ScreenSetting = () => {
   const [createScreen, setCreateScreen] = useState(false);
