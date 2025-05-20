@@ -3,7 +3,7 @@ import Modal from "../../components/Modal";
 import { ButtonIcon, InputText, TextArea } from "../../components";
 import Swal from "sweetalert2";
 import { createScreenAPI } from "../../services/screen";
-import SelectedListPoli from "./SelectedListPoli";
+import { BadgePoli } from "../Poli";
 
 const ModalCreateScreen = (props) => {
   const { createScreen, setCreateScreen, getScreen } = props;
@@ -69,10 +69,11 @@ const ModalCreateScreen = (props) => {
             />
           </div>
           {/* screen poli */}
-          <SelectedListPoli
+          <BadgePoli
             createScreen={createScreen}
             formData={formData}
             setFormData={setFormData}
+            setLoading={setLoading}
           />
           {/* screen information */}
           <div className="mb-5">

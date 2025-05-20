@@ -9,7 +9,7 @@ export const AllContext = createContext();
 export const AllProvider = ({ children }) => {
   const navigate = useNavigate();
   // socket
-  const socket = io("http://localhost:8000");
+  const socket = io("https://hospital-queue-be-production.up.railway.app");
   // auth
   const [loginId, setLoginId] = useState(null);
   const token = JSON.parse(localStorage.getItem("verifyToken"));

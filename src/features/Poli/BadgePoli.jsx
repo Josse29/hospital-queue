@@ -2,18 +2,30 @@ import { useEffect, useState } from "react";
 import { getPoliAPI } from "../../services/poli";
 import { FaPlus, FaTimes } from "react-icons/fa";
 
-const SelectedListPoli = (props) => {
-  const { createScreen, formData, setFormData } = props;
+const BadgePoli = (props) => {
+  const { createScreen, formData, setFormData, setLoading } = props;
   const [poliList, setPoliList] = useState([]);
   const getPoliList = async () => {
+    setLoading(true);
     try {
       const response = await getPoliAPI();
       setPoliList(response.data);
     } catch (error) {
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
-  const handleAddListPoli = (el) => {
+  const handleFilterPoli = (el) => {
+    const updated = formData.ScreenPoliSelected.filter(
+      (item) => item._id !== el._id
+    );
+    setFormData((prev) => ({
+      ...prev,
+      ScreenPoliSelected: updated,
+    }));
+  };
+  const handlePushPoli = (el) => {
     const existed = formData.ScreenPoliSelected.find(
       (list) => list._id === el._id
     );
@@ -42,15 +54,7 @@ const SelectedListPoli = (props) => {
                 <div
                   key={el._id}
                   className="flex items-center gap-3 bg-slate-700 px-3 py-1 w-fit text-white rounded cursor-pointer"
-                  onClick={() => {
-                    const updated = formData.ScreenPoliSelected.filter(
-                      (item) => item._id !== el._id
-                    );
-                    setFormData((prev) => ({
-                      ...prev,
-                      ScreenPoliSelected: updated,
-                    }));
-                  }}
+                  onClick={() => handleFilterPoli(el)}
                 >
                   <div className="text-lg">{el.PoliName}</div>
                   <FaTimes />
@@ -74,7 +78,7 @@ const SelectedListPoli = (props) => {
                 <div
                   key={el._id}
                   className="flex items-center gap-3 bg-teal-600 px-3 py-1 w-fit text-white rounded cursor-pointer"
-                  onClick={() => handleAddListPoli(el)}
+                  onClick={() => handlePushPoli(el)}
                 >
                   <div className="text-lg">{el.PoliName}</div>
                   <FaPlus />
@@ -90,4 +94,4 @@ const SelectedListPoli = (props) => {
     </div>
   );
 };
-export default SelectedListPoli;
+export default BadgePoli;

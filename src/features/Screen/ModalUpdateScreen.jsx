@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, InputText, Modal, TextArea } from "../../components";
-import SelectedListPoli from "./SelectedListPoli";
 import { updateScreenAPI } from "../../services/screen";
 import Swal from "sweetalert2";
+import { BadgePoli } from "../Poli";
 
 const ModalUpdateScreen = (props) => {
   const { dataScreen, updateScreen, setUpdateScreen, getScreen } = props;
@@ -79,10 +79,11 @@ const ModalUpdateScreen = (props) => {
             />
           </div>
           {/* screen poli */}
-          <SelectedListPoli
+          <BadgePoli
             createScreen={updateScreen}
             formData={formData}
             setFormData={setFormData}
+            setLoading={setLoading}
           />
           {/* screen information */}
           <div className="mb-5">

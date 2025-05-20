@@ -14,8 +14,10 @@ import PrintQueue from "./PrintQueue";
 import PoliQueueActive from "./PoliQueueActive";
 import ModalTriggerRing from "./ModalTriggerRing";
 import BtnDownloadPoliQueue from "./BtnDownloadPoliQueue";
+import BadgePoli from "./BadgePoli";
 
 export {
+  BadgePoli,
   BtnDownloadPoliQueue,
   BtnRingQueue,
   BtnRefreshPoliQueue,
