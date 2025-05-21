@@ -3,11 +3,12 @@ import { io } from "socket.io-client";
 import { getPoliQueueAPI } from "../services/poli";
 import { getHospitalAPI } from "../services/hospital";
 import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 export const AllContext = createContext();
 export const AllProvider = ({ children }) => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   // socket
   const socket = io("https://hospital-queue-be-production.up.railway.app");
   // auth
@@ -16,13 +17,15 @@ export const AllProvider = ({ children }) => {
   const [logout, setLogout] = useState(false);
   // protected routes
   useEffect(() => {
-    if (!token) {
-      navigate("/");
-    } else {
+    if (token) {
       const decoded = jwtDecode(token);
       setLoginId(decoded.id);
     }
-  }, [navigate]);
+    const page = "/queue-ring, /setting-screen, /about-us";
+    if (!token && page.includes(pathname)) {
+      navigate("/");
+    }
+  }, [pathname]);
   // hospital
   const [hospital, setHospital] = useState({
     HospitalName: "",

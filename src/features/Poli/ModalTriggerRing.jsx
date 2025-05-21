@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { ButtonIcon, Modal } from "../../components";
 import { FaCheck } from "react-icons/fa";
 import { speechBell } from "../../utils";
@@ -7,20 +7,21 @@ import { FaBell } from "react-icons/fa6";
 const ModalTriggerRing = (props) => {
   const { openTriggerRing, setOpenTriggerRing, screenName } = props;
   const [loading, setLoading] = useState(false);
-  const checkSoundTimeOut = useRef(null);
+  const soundTimeout = useRef(null);
+  useEffect(() => {
+    return () => {
+      clearTimeout(soundTimeout.current);
+    };
+  }, []);
   const checkSound = async () => {
+    setLoading(true);
     try {
-      clearTimeout(checkSoundTimeOut.current);
-      setLoading(true);
-      await speechBell(`Rumah Sakit Layar ${screenName} !`);
+      await speechBell(`${screenName}`);
+      setOpenTriggerRing(false);
     } catch (error) {
       console.error(error);
-      throw error;
     } finally {
-      clearTimeout.current = setTimeout(() => {
-        setOpenTriggerRing(false);
-        setLoading(false);
-      }, 1000);
+      setLoading(false);
     }
   };
   return (
@@ -35,13 +36,13 @@ const ModalTriggerRing = (props) => {
         <ButtonIcon
           title="Yes"
           icon={<FaCheck />}
-          className={`bg-teal-600 hover:bg-teal-700 hover:ring-teal-700 cursor-not-allowed ${
+          className={`bg-teal-600 hover:bg-teal-700 hover:ring-teal-700 ${
             loading
               ? "opacity-30 cursor-not-allowed"
               : "opacity-100 cursor-pointer"
           }`}
           onClick={checkSound}
-          disabled={loading ? true : false}
+          disabled={loading}
         />
       </Modal.Footer>
     </Modal>

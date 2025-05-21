@@ -10,6 +10,9 @@ const ModalLogout = () => {
   const { logout, setLogout, loginId, setLoginId } = useContext(AllContext);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  window.addEventListener("beforeunload", async () => {
+    await handleLogout();
+  });
   const handleLogout = async () => {
     setLoading(true);
     try {
